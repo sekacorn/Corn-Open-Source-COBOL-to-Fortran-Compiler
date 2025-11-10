@@ -1,0 +1,485 @@
+================================================================================
+             CORN COBOL-TO-FORTRAN COMPILER - SCRIPTS GUIDE
+                    Banking Enterprise Edition v2.0
+================================================================================
+
+Copyright (c) 2025 sekacorn | sekacorn@gmail.com
+
+This guide explains all the build and run scripts included with the compiler.
+
+================================================================================
+                        AVAILABLE SCRIPTS
+================================================================================
+
+BUILD SCRIPTS:
+  build.sh              - Build script for Linux/Mac
+  build.bat             - Build script for Windows
+
+RUN SCRIPTS:
+  run.sh                - Run compiler (Linux/Mac)
+  run.bat               - Run compiler (Windows)
+
+WEB DASHBOARD SCRIPTS:
+  run-web.sh            - Start web dashboard (Linux/Mac)
+  run-web.bat           - Start web dashboard (Windows)
+
+================================================================================
+                        BUILD SCRIPTS
+================================================================================
+
+BUILD.SH (Linux/Mac)
+--------------------
+Purpose: Builds the COBOL-to-Fortran compiler
+
+Usage:
+  ./build.sh [OPTIONS]
+
+Options:
+  --release       Build in release mode (optimized, default)
+  --debug         Build in debug mode (faster compilation, slower execution)
+  --clean         Clean build directory before building
+  --help, -h      Show help message
+
+Examples:
+  ./build.sh                    # Build in release mode
+  ./build.sh --debug            # Build in debug mode
+  ./build.sh --clean --release  # Clean and build release
+  ./build.sh --help             # Show help
+
+Output:
+  - Release binary: target/release/corn-compiler
+  - Debug binary:   target/debug/corn-compiler
+
+
+BUILD.BAT (Windows)
+-------------------
+Purpose: Builds the COBOL-to-Fortran compiler on Windows
+
+Usage:
+  build.bat [OPTIONS]
+
+Options:
+  --release       Build in release mode (optimized, default)
+  --debug         Build in debug mode (faster compilation, slower execution)
+  --clean         Clean build directory before building
+  --help, -h      Show help message
+
+Examples:
+  build.bat                    # Build in release mode
+  build.bat --debug            # Build in debug mode
+  build.bat --clean --release  # Clean and build release
+  build.bat --help             # Show help
+
+Output:
+  - Release binary: target\release\corn-compiler.exe
+  - Debug binary:   target\debug\corn-compiler.exe
+
+================================================================================
+                        RUN SCRIPTS
+================================================================================
+
+RUN.SH (Linux/Mac)
+------------------
+Purpose: Runs the COBOL-to-Fortran compiler
+
+Usage:
+  ./run.sh [--debug] <COMMAND> [ARGS...]
+
+Options:
+  --debug         Run debug build instead of release build
+
+Commands:
+  compile <input.cob> -o <output.f90>    Compile a COBOL file
+  test                                   Run banking test suite
+  version                                Show version information
+  help                                   Show help message
+
+Examples:
+  ./run.sh compile myprogram.cob -o myprogram.f90
+  ./run.sh test
+  ./run.sh version
+  ./run.sh help
+  ./run.sh --debug compile program.cob -o program.f90
+
+Auto-Build:
+  If the compiler is not built, the script will automatically run build.sh
+
+
+RUN.BAT (Windows)
+-----------------
+Purpose: Runs the COBOL-to-Fortran compiler on Windows
+
+Usage:
+  run.bat [--debug] <COMMAND> [ARGS...]
+
+Options:
+  --debug         Run debug build instead of release build
+
+Commands:
+  compile <input.cob> -o <output.f90>    Compile a COBOL file
+  test                                   Run banking test suite
+  version                                Show version information
+  help                                   Show help message
+
+Examples:
+  run.bat compile myprogram.cob -o myprogram.f90
+  run.bat test
+  run.bat version
+  run.bat help
+  run.bat --debug compile program.cob -o program.f90
+
+Auto-Build:
+  If the compiler is not built, the script will automatically run build.bat
+
+================================================================================
+                        WEB DASHBOARD SCRIPTS
+================================================================================
+
+RUN-WEB.SH (Linux/Mac)
+----------------------
+Purpose: Starts the web dashboard for the compiler
+
+Usage:
+  ./run-web.sh [--debug]
+
+Options:
+  --debug         Run debug build instead of release build
+
+Access:
+  Once started, open browser to: http://127.0.0.1:8080
+
+API Endpoints:
+  GET  /              - Dashboard home page (HTML)
+  GET  /version       - Compiler version info (JSON)
+  GET  /status        - Health status (JSON)
+  GET  /features      - Banking features (JSON)
+  GET  /report        - Compilation reports (auth required, JSON)
+
+Authentication:
+  For /report endpoint:
+  Header: Authorization: Bearer SECRET_TOKEN
+
+Examples:
+  ./run-web.sh                  # Start in release mode
+  ./run-web.sh --debug          # Start in debug mode
+
+Stop:
+  Press Ctrl+C to stop the server
+
+
+RUN-WEB.BAT (Windows)
+---------------------
+Purpose: Starts the web dashboard for the compiler on Windows
+
+Usage:
+  run-web.bat [--debug]
+
+Options:
+  --debug         Run debug build instead of release build
+
+Access:
+  Once started, open browser to: http://127.0.0.1:8080
+
+API Endpoints:
+  GET  /              - Dashboard home page (HTML)
+  GET  /version       - Compiler version info (JSON)
+  GET  /status        - Health status (JSON)
+  GET  /features      - Banking features (JSON)
+  GET  /report        - Compilation reports (auth required, JSON)
+
+Authentication:
+  For /report endpoint:
+  Header: Authorization: Bearer SECRET_TOKEN
+
+Examples:
+  run-web.bat                   # Start in release mode
+  run-web.bat --debug           # Start in debug mode
+
+Stop:
+  Press Ctrl+C to stop the server
+
+================================================================================
+                        TYPICAL WORKFLOWS
+================================================================================
+
+FIRST TIME SETUP:
+-----------------
+1. Install Rust:
+   Linux/Mac: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+   Windows:   https://win.rustup.rs/
+
+2. Build the compiler:
+   Linux/Mac: ./build.sh
+   Windows:   build.bat
+
+3. Test the compiler:
+   Linux/Mac: ./run.sh test
+   Windows:   run.bat test
+
+
+DAILY DEVELOPMENT:
+------------------
+1. Build with latest changes:
+   Linux/Mac: ./build.sh --clean --release
+   Windows:   build.bat --clean --release
+
+2. Compile COBOL files:
+   Linux/Mac: ./run.sh compile program.cob -o program.f90
+   Windows:   run.bat compile program.cob -o program.f90
+
+3. Run tests:
+   Linux/Mac: ./run.sh test
+   Windows:   run.bat test
+
+
+QUICK COMPILE (without scripts):
+---------------------------------
+If scripts are not working, use cargo directly:
+
+Build:
+  cargo build --release
+
+Run:
+  cargo run --release --bin corn-compiler -- compile input.cob -o output.f90
+  cargo run --release --bin corn-compiler -- test
+  cargo run --release --bin corn-compiler -- version
+
+Web Dashboard:
+  cargo run --release --bin web-dashboard
+
+
+DEBUGGING:
+----------
+For debugging, use debug builds (faster compilation, slower execution):
+
+Linux/Mac:
+  ./build.sh --debug
+  ./run.sh --debug compile program.cob -o program.f90
+
+Windows:
+  build.bat --debug
+  run.bat --debug compile program.cob -o program.f90
+
+Debug binaries include more error information and are easier to debug.
+
+
+DEMO/PRESENTATION:
+------------------
+1. Start web dashboard in one terminal:
+   Linux/Mac: ./run-web.sh
+   Windows:   run-web.bat
+
+2. Open browser to: http://127.0.0.1:8080
+
+3. In another terminal, compile examples:
+   Linux/Mac: ./run.sh compile banking_test_suite.cob -o banking.f90
+   Windows:   run.bat compile banking_test_suite.cob -o banking.f90
+
+4. Show compiled Fortran code and web dashboard
+
+================================================================================
+                        TROUBLESHOOTING
+================================================================================
+
+PROBLEM: Permission denied (Linux/Mac)
+SOLUTION: Make scripts executable:
+  chmod +x build.sh run.sh run-web.sh
+
+PROBLEM: Rust not found
+SOLUTION: Install Rust from https://rustup.rs/
+  Linux/Mac: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  Windows:   Download from https://win.rustup.rs/
+  After install, restart terminal
+
+PROBLEM: Build fails
+SOLUTION:
+  1. Check internet connection (for dependency downloads)
+  2. Try clean build:
+     Linux/Mac: ./build.sh --clean --release
+     Windows:   build.bat --clean --release
+  3. Update Rust: rustup update
+  4. Check error messages
+
+PROBLEM: Script not found (Windows)
+SOLUTION: Run from project root directory:
+  cd "C:\Users\sekac\OneDrive\Documents\My Project\Corn-Open-Source-COBOL-to-Fortran-Compiler"
+  build.bat
+
+PROBLEM: Web dashboard won't start
+SOLUTION:
+  1. Check if port 8080 is available:
+     Linux/Mac: lsof -i :8080
+     Windows:   netstat -ano | findstr :8080
+  2. Close other programs using port 8080
+  3. Try different port (edit src/web_dashboard.rs)
+
+PROBLEM: Scripts work but compiler doesn't
+SOLUTION:
+  1. Check build logs for errors
+  2. Verify Rust version: rustc --version (should be 1.70+)
+  3. Try cargo directly:
+     cargo run --release --bin corn-compiler -- version
+
+================================================================================
+                        SCRIPT FEATURES
+================================================================================
+
+AUTO-BUILD:
+  Run scripts automatically build the compiler if not already built
+
+ERROR CHECKING:
+  All scripts check for Rust installation before proceeding
+
+HELP MESSAGES:
+  All build scripts support --help flag for usage information
+
+DEBUG MODE:
+  All scripts support --debug flag for debug builds
+
+CLEAN BUILD:
+  Build scripts support --clean flag to remove old builds
+
+CROSS-PLATFORM:
+  Separate scripts for Windows (.bat) and Linux/Mac (.sh)
+
+INFORMATIVE OUTPUT:
+  Scripts show clear progress messages and next steps
+
+================================================================================
+                        ADVANCED USAGE
+================================================================================
+
+CUSTOM BUILD FLAGS:
+-------------------
+Edit build scripts to add custom Rust flags:
+
+In build.sh, change:
+  cargo build --release
+
+To:
+  RUSTFLAGS="-C target-cpu=native" cargo build --release
+
+This optimizes for your specific CPU.
+
+
+PARALLEL BUILDS:
+----------------
+Speed up builds with parallel compilation:
+
+  cargo build --release -j 8
+
+Where 8 is the number of parallel jobs.
+
+
+CUSTOM PORTS:
+-------------
+To change web dashboard port, edit src/web_dashboard.rs:
+
+Change:
+  .bind("127.0.0.1:8080")?
+
+To:
+  .bind("127.0.0.1:3000")?
+
+
+PRODUCTION DEPLOYMENT:
+----------------------
+For production, use release builds with optimizations:
+
+  ./build.sh --release
+  cp target/release/corn-compiler /opt/corn-compiler/bin/
+
+See ENTERPRISE-DEPLOYMENT-GUIDE.txt for full production deployment.
+
+================================================================================
+                        SCRIPT MAINTENANCE
+================================================================================
+
+UPDATING SCRIPTS:
+-----------------
+If you modify the scripts:
+
+1. Test on both Windows and Linux/Mac
+2. Update this guide with changes
+3. Update QUICK-REFERENCE.txt if commands change
+4. Test all workflows to ensure they still work
+
+ADDING NEW SCRIPTS:
+-------------------
+When adding new scripts:
+
+1. Create both .sh (Linux/Mac) and .bat (Windows) versions
+2. Add copyright header
+3. Add --help support
+4. Document in this guide
+5. Update QUICK-REFERENCE.txt
+
+SCRIPT LOCATIONS:
+-----------------
+All scripts should be in project root directory:
+  C:\Users\sekac\OneDrive\Documents\My Project\Corn-Open-Source-COBOL-to-Fortran-Compiler\
+
+Do not move scripts to subdirectories.
+
+================================================================================
+                        SUMMARY
+================================================================================
+
+BUILD:
+  Linux/Mac: ./build.sh
+  Windows:   build.bat
+
+RUN COMPILER:
+  Linux/Mac: ./run.sh compile input.cob -o output.f90
+  Windows:   run.bat compile input.cob -o output.f90
+
+TEST:
+  Linux/Mac: ./run.sh test
+  Windows:   run.bat test
+
+WEB DASHBOARD:
+  Linux/Mac: ./run-web.sh
+  Windows:   run-web.bat
+  Browser:   http://127.0.0.1:8080
+
+HELP:
+  Linux/Mac: ./build.sh --help
+  Windows:   build.bat --help
+
+All scripts are production-ready and support both debug and release modes.
+
+================================================================================
+                        QUICK REFERENCE
+================================================================================
+
+FIRST TIME:
+  1. Install Rust (https://rustup.rs/)
+  2. Run build script (build.sh or build.bat)
+  3. Test compiler (./run.sh test or run.bat test)
+
+DAILY USE:
+  Compile: ./run.sh compile file.cob -o file.f90
+  Test:    ./run.sh test
+  Web:     ./run-web.sh
+
+BEFORE DEMO:
+  1. Clean build: ./build.sh --clean --release
+  2. Start web:   ./run-web.sh
+  3. Open:        http://127.0.0.1:8080
+
+TROUBLESHOOTING:
+  1. Check Rust:    rustc --version
+  2. Clean build:   ./build.sh --clean
+  3. Direct cargo:  cargo run --release -- version
+
+For more details, see documentation files in project root.
+
+================================================================================
+                        END OF SCRIPTS GUIDE
+================================================================================
+
+Copyright (c) 2025 sekacorn | sekacorn@gmail.com
+Version: 2.0 - Banking Enterprise Edition
+
+For support: sekacorn@gmail.com
+Response time: 2 business days

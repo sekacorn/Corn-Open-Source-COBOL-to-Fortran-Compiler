@@ -1,0 +1,515 @@
+================================================================================
+           COBOL-to-Fortran Compiler - Architecture Overview
+================================================================================
+
+PROJECT PURPOSE:
+----------------
+A compiler that translates COBOL source code to Fortran, designed to enable
+modernization for companies like banks and financial institutions. Helps
+developers migrate legacy COBOL systems to Fortran.
+
+TARGET USERS:
+-------------
+- Junior developers learning COBOL-to-Fortran translation
+- Financial institutions (banks, financial services)
+- Developers performing COBOL migration projects
+
+
+================================================================================
+                          SYSTEM ARCHITECTURE DIAGRAM
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              MAIN ENTRY POINT                               │
+│                                 (main.rs)                                   │
+│                                                                             │
+│  Responsibilities:                                                          │
+│  - Initialize all system components                                         │
+│  - Orchestrate the compilation workflow                                     │
+│  - Launch background services (Report Streaming, Web Dashboard)             │
+│  - Coordinate data flow between modules                                     │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                    ┌───────────────┼───────────────┐
+                    │               │               │
+                    ▼               ▼               ▼
+        ┌─────────────────┐ ┌─────────────┐ ┌────────────────┐
+        │ COBOL PARSER    │ │  FORTRAN    │ │    REPORT      │
+        │ (cobol_parser)  │ │  GENERATOR  │ │   SECURITY     │
+        │                 │ │  (fortran_  │ │   (report_     │
+        │                 │ │  generator) │ │   security)    │
+        └─────────────────┘ └─────────────┘ └────────────────┘
+                    │               ▲               │
+                    └───────────────┼───────────────┘
+                                    │
+                    ┌───────────────┴───────────────┐
+                    │                               │
+                    ▼                               ▼
+        ┌──────────────────────┐      ┌──────────────────────────┐
+        │  REPORT STREAMING    │      │    WEB DASHBOARD         │
+        │  (report_streaming)  │      │    (web_dashboard)       │
+        │                      │      │                          │
+        │  TCP Server          │      │  HTTP API Server         │
+        │  127.0.0.1:8080      │      │  127.0.0.1:8080/report   │
+        └──────────────────────┘      └──────────────────────────┘
+
+
+================================================================================
+                          MODULE DESCRIPTIONS
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ MODULE 1: COBOL PARSER (cobol_parser.rs)                                   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ Purpose: Parse COBOL source code into an Abstract Syntax Tree (AST)        │
+│                                                                             │
+│ Key Data Structures:                                                        │
+│  ┌──────────────────────────────────────────────────────────┐              │
+│  │ CobolStatement (Enum)                                    │              │
+│  ├──────────────────────────────────────────────────────────┤              │
+│  │ - Display(String)                    # DISPLAY statement │              │
+│  │ - StopRun                            # STOP RUN          │              │
+│  │ - Move(String, String)               # MOVE TO           │              │
+│  │ - Compute(String, String)            # COMPUTE           │              │
+│  │ - Perform(String)                    # PERFORM paragraph │              │
+│  │ - PerformUntil(condition, body)      # PERFORM UNTIL     │              │
+│  │ - PerformVarying(var, from, to, body)# PERFORM VARYING   │              │
+│  │ - OpenFile(mode, filename)           # OPEN FILE         │              │
+│  │ - ReadFile(filename)                 # READ FILE         │              │
+│  │ - WriteFile(file, fields)            # WRITE FILE        │              │
+│  │ - ExecSQL(query)                     # EXEC SQL block    │              │
+│  └──────────────────────────────────────────────────────────┘              │
+│                                                                             │
+│  ┌──────────────────────────────────────────────────────────┐              │
+│  │ CobolParagraph (Struct)                                  │              │
+│  ├──────────────────────────────────────────────────────────┤              │
+│  │ - name: String                                           │              │
+│  │ - statements: Vec<CobolStatement>                        │              │
+│  └──────────────────────────────────────────────────────────┘              │
+│                                                                             │
+│  ┌──────────────────────────────────────────────────────────┐              │
+│  │ CobolProgram (Struct)                                    │              │
+│  ├──────────────────────────────────────────────────────────┤              │
+│  │ - name: String                                           │              │
+│  │ - paragraphs: HashMap<String, CobolParagraph>            │              │
+│  └──────────────────────────────────────────────────────────┘              │
+│                                                                             │
+│ Key Functions:                                                              │
+│  - parse_cobol_code(input: &str) -> CobolProgram                           │
+│                                                                             │
+│ Supported COBOL Features:                                                   │
+│  - File Handling (OPEN, READ, WRITE)                                       │
+│  - Advanced Loops (PERFORM VARYING, PERFORM UNTIL)                         │
+│  - COBOL Embedded SQL (EXEC SQL ... END-EXEC)                              │
+│  - Basic statements (DISPLAY, MOVE, COMPUTE, STOP RUN)                     │
+│  - Program structure (PROGRAM-ID, paragraphs)                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ MODULE 2: FORTRAN GENERATOR (fortran_generator.rs)                         │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ Purpose: Convert parsed COBOL AST into equivalent Fortran source code      │
+│                                                                             │
+│ Key Functions:                                                              │
+│  - generate_fortran_code(cobol: &CobolProgram) -> String                   │
+│  - convert_paragraph_to_fortran(name, paragraph) -> String                 │
+│  - convert_statement_to_fortran(statement) -> String                       │
+│                                                                             │
+│ Translation Mappings:                                                       │
+│  ┌──────────────────────────────┬────────────────────────────────┐         │
+│  │ COBOL Statement              │ Fortran Equivalent             │         │
+│  ├──────────────────────────────┼────────────────────────────────┤         │
+│  │ DISPLAY "text"               │ WRITE(*,*) "text"              │         │
+│  │ STOP RUN                     │ STOP                           │         │
+│  │ MOVE value TO var            │ var = value                    │         │
+│  │ COMPUTE var = expr           │ var = expr                     │         │
+│  │ PERFORM paragraph            │ CALL PARAGRAPH                 │         │
+│  │ PERFORM UNTIL condition      │ DO WHILE (condition)           │         │
+│  │ PERFORM VARYING var FROM-TO  │ DO var = from, to              │         │
+│  │ OPEN INPUT file              │ OPEN(UNIT=10, FILE, STATUS)    │         │
+│  │ READ file                    │ READ(UNIT=10, FMT=*)           │         │
+│  │ WRITE record TO file         │ WRITE(UNIT=10, FMT=*) record   │         │
+│  │ EXEC SQL query               │ ! EXEC SQL (not implemented)   │         │
+│  └──────────────────────────────┴────────────────────────────────┘         │
+│                                                                             │
+│ Supported Features:                                                         │
+│  - File Handling (OPEN, READ, WRITE)                                       │
+│  - Advanced Loops (PERFORM VARYING, PERFORM UNTIL)                         │
+│  - COBOL Embedded SQL detection (translation not yet implemented)          │
+│  - Variable inference and declaration                                      │
+│  - Program and subroutine structure generation                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ MODULE 3: REPORT SECURITY (report_security.rs)                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ Purpose: Handle encryption, decryption, and authentication for reports     │
+│                                                                             │
+│ Security Features:                                                          │
+│  - AES-256-GCM encryption for reports                                      │
+│  - Secure decryption of reports                                            │
+│  - API authentication using secure tokens                                  │
+│                                                                             │
+│ Key Functions:                                                              │
+│  - encrypt_report(filename: &str, key: &[u8; 32]) -> Result<()>           │
+│      * Encrypts report file using AES-256-GCM                              │
+│      * Creates .enc file with encrypted content                            │
+│                                                                             │
+│  - decrypt_report(filename: &str, key: &[u8; 32]) -> Result<()>           │
+│      * Decrypts encrypted report file                                      │
+│      * Creates .dec file with decrypted content                            │
+│                                                                             │
+│  - validate_token(token: &str) -> bool                                     │
+│      * Validates API authentication tokens                                 │
+│      * Compares against SECRET_TOKEN                                       │
+│                                                                             │
+│  - generate_encryption_key() -> [u8; 32]                                   │
+│      * Generates secure random 32-byte encryption key                      │
+│                                                                             │
+│ Dependencies:                                                               │
+│  - aes-gcm: AES-256-GCM encryption library                                 │
+│  - rand: Random key generation                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ MODULE 4: REPORT STREAMING (report_streaming.rs)                           │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ Purpose: Enable real-time report streaming over TCP sockets                │
+│                                                                             │
+│ Features:                                                                   │
+│  - Secure report streaming via TCP                                         │
+│  - Ability to receive reports as a client                                  │
+│  - Enhanced logging for debugging                                          │
+│                                                                             │
+│ Key Functions:                                                              │
+│  - start_report_server(address: &str) -> Result<()>                        │
+│      * Starts TCP server on specified address (127.0.0.1:8080)             │
+│      * Listens for incoming client connections                             │
+│      * Streams report data to connected clients                            │
+│                                                                             │
+│  - send_report_data(stream: &mut TcpStream) -> Result<()>                 │
+│      * Sends report data to a connected TCP client                         │
+│      * Transmits monthly sales report data                                 │
+│                                                                             │
+│  - receive_report_from_server(address: &str) -> Result<()>                │
+│      * Connects to report server as a client                               │
+│      * Receives and displays report data                                   │
+│                                                                             │
+│ Network Protocol:                                                           │
+│  ┌────────────┐                                  ┌────────────┐            │
+│  │   Client   │ ─────── TCP Connection ────────> │   Server   │            │
+│  │            │ <────── Report Data ──────────── │ (port 8080)│            │
+│  └────────────┘                                  └────────────┘            │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ MODULE 5: WEB DASHBOARD (web_dashboard.rs)                                 │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ Purpose: Provide web-based API for accessing reports securely              │
+│                                                                             │
+│ Features:                                                                   │
+│  - Secure API authentication using tokens                                  │
+│  - Live report data retrieval via HTTP requests                            │
+│  - Error handling for unauthorized access                                  │
+│                                                                             │
+│ Key Functions:                                                              │
+│  - main() -> Result<()>                                                    │
+│      * Starts HTTP server on 127.0.0.1:8080                                │
+│      * Registers /report endpoint                                          │
+│                                                                             │
+│  - report_handler(req: HttpRequest) -> impl Responder                      │
+│      * Handles GET requests to /report endpoint                            │
+│      * Returns live sales report if authenticated                          │
+│      * Returns "Invalid Token" error if not authenticated                  │
+│                                                                             │
+│  - validate_token(req: &HttpRequest) -> bool                               │
+│      * Validates Authorization header                                      │
+│      * Checks for "Bearer SECRET_TOKEN"                                    │
+│                                                                             │
+│ API Endpoints:                                                              │
+│  ┌────────────────────────────────────────────────────────────┐            │
+│  │ GET /report                                                │            │
+│  ├────────────────────────────────────────────────────────────┤            │
+│  │ Headers: Authorization: Bearer SECRET_TOKEN                │            │
+│  │ Response: Live Sales Report data                           │            │
+│  │ Status: 200 OK (authenticated) / 401 Unauthorized          │            │
+│  └────────────────────────────────────────────────────────────┘            │
+│                                                                             │
+│ Usage Example:                                                              │
+│  curl -H "Authorization: Bearer SECRET_TOKEN" \                            │
+│       http://127.0.0.1:8080/report                                         │
+│                                                                             │
+│ Dependencies:                                                               │
+│  - actix-web: Web framework for HTTP API                                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+
+================================================================================
+                          DATA FLOW DIAGRAM
+================================================================================
+
+Step 1: COBOL Input
+───────────────────
+    ┌──────────────────────────────────────────────────────┐
+    │  COBOL Source Code                                   │
+    │  ───────────────────                                 │
+    │  IDENTIFICATION DIVISION.                            │
+    │  PROGRAM-ID. SALES.                                  │
+    │  PROCEDURE DIVISION.                                 │
+    │  START.                                              │
+    │      DISPLAY "Sales Report".                         │
+    │      OPEN INPUT SALES-FILE.                          │
+    │      READ SALES-FILE.                                │
+    │      PERFORM PROCESS-RECORDS UNTIL END-OF-FILE.      │
+    │      WRITE SALES-RECORD TO SALES-OUTPUT.             │
+    │      EXEC SQL SELECT * FROM SALES END-EXEC.          │
+    │      STOP RUN.                                       │
+    └──────────────────────────────────────────────────────┘
+                         │
+                         ▼
+Step 2: Parsing Phase
+─────────────────────
+    ┌──────────────────────────────────────────────────────┐
+    │  COBOL Parser                                        │
+    │  ────────────                                        │
+    │  - Tokenize COBOL source                             │
+    │  - Build Abstract Syntax Tree (AST)                  │
+    │  - Create CobolProgram structure                     │
+    │  - Identify paragraphs and statements                │
+    └──────────────────────────────────────────────────────┘
+                         │
+                         ▼
+    ┌──────────────────────────────────────────────────────┐
+    │  CobolProgram (AST)                                  │
+    │  ──────────────────                                  │
+    │  name: "SALES"                                       │
+    │  paragraphs: {                                       │
+    │    "START": [                                        │
+    │      Display("Sales Report"),                        │
+    │      OpenFile("INPUT", "SALES-FILE"),                │
+    │      ReadFile("SALES-FILE"),                         │
+    │      PerformUntil("END-OF-FILE", [...]),             │
+    │      WriteFile("SALES-OUTPUT", [...]),               │
+    │      ExecSQL("SELECT * FROM SALES"),                 │
+    │      StopRun                                         │
+    │    ]                                                 │
+    │  }                                                   │
+    └──────────────────────────────────────────────────────┘
+                         │
+                         ▼
+Step 3: Code Generation
+───────────────────────
+    ┌──────────────────────────────────────────────────────┐
+    │  Fortran Generator                                   │
+    │  ─────────────────                                   │
+    │  - Traverse AST                                      │
+    │  - Map COBOL statements to Fortran equivalents       │
+    │  - Generate Fortran program structure                │
+    │  - Create subroutines from paragraphs                │
+    └──────────────────────────────────────────────────────┘
+                         │
+                         ▼
+    ┌──────────────────────────────────────────────────────┐
+    │  Fortran Output Code                                 │
+    │  ───────────────────                                 │
+    │  PROGRAM SALES                                       │
+    │    IMPLICIT NONE                                     │
+    │    CALL MAIN                                         │
+    │    STOP                                              │
+    │  END PROGRAM SALES                                   │
+    │                                                      │
+    │  SUBROUTINE START                                    │
+    │    WRITE(*,*) "Sales Report"                         │
+    │    OPEN(UNIT=10, FILE='SALES-FILE', STATUS='OLD')    │
+    │    READ(UNIT=10, FMT=*)                              │
+    │    DO WHILE (END-OF-FILE == .FALSE.)                 │
+    │      CALL PROCESS_RECORDS                            │
+    │    END DO                                            │
+    │    WRITE(UNIT=10, FMT=*) SALES_RECORD                │
+    │    ! EXEC SQL TRANSLATION NOT IMPLEMENTED            │
+    │    STOP                                              │
+    │  END SUBROUTINE START                                │
+    └──────────────────────────────────────────────────────┘
+                         │
+                         ▼
+Step 4: Report Security (Parallel)
+──────────────────────────────────
+    ┌──────────────────────────────────────────────────────┐
+    │  Report Encryption                                   │
+    │  ─────────────────                                   │
+    │  - Generate AES-256 encryption key                   │
+    │  - Encrypt sales_report.txt                          │
+    │  - Save as sales_report.txt.enc                      │
+    └──────────────────────────────────────────────────────┘
+
+Step 5: Report Services (Background Threads)
+────────────────────────────────────────────
+    ┌──────────────────────────┐   ┌──────────────────────────┐
+    │  Report Streaming        │   │  Web Dashboard           │
+    │  ────────────────         │   │  ─────────────           │
+    │  TCP Server              │   │  HTTP API Server         │
+    │  Listens on :8080        │   │  Listens on :8080/report │
+    │  Streams report data     │   │  Serves via REST API     │
+    └──────────────────────────┘   └──────────────────────────┘
+
+
+================================================================================
+                          DEPENDENCY GRAPH
+================================================================================
+
+External Dependencies (from Cargo.toml):
+────────────────────────────────────────
+
+┌──────────────────────────────────────────────────────────────────────┐
+│                                                                      │
+│  aes-gcm (0.9)           ──> Report Security Module                 │
+│    └─ AES-256-GCM encryption for secure report storage              │
+│                                                                      │
+│  actix-web (4)           ──> Web Dashboard Module                   │
+│    └─ Web framework for API and dashboard                           │
+│                                                                      │
+│  rand (0.8)              ──> Report Security Module                 │
+│    └─ Random key generation for encryption                          │
+│                                                                      │
+│  tokio (1)               ──> Async runtime for networking           │
+│    └─ Full feature set enabled                                      │
+│                                                                      │
+│  reqwest (0.11)          ──> HTTP requests for API                  │
+│    └─ Features: blocking, json                                      │
+│                                                                      │
+│  flate2 (1.0)            ──> Gzip compression for reports           │
+│                                                                      │
+│  serde (1.0)             ──> Serialization support                  │
+│    └─ Derive feature enabled                                        │
+│                                                                      │
+│  serde_json (1.0)        ──> JSON handling for reports              │
+│                                                                      │
+│  sqlx (0.5)              ──> Database support for SQL integration   │
+│    └─ Features: mysql, postgres, sqlite, runtime-tokio-rustls       │
+│                                                                      │
+└──────────────────────────────────────────────────────────────────────┘
+
+
+================================================================================
+                          COMPILATION WORKFLOW
+================================================================================
+
+User Execution Flow:
+────────────────────
+
+1. Install Dependencies:
+   $ cargo build
+
+   Compiles all modules and downloads dependencies
+
+2. Run Main Compiler:
+   $ cargo run
+
+   ┌─────────────────────────────────────────────┐
+   │ main.rs:                                    │
+   │  ├─ Parse COBOL code                        │
+   │  ├─ Generate Fortran code                   │
+   │  ├─ Encrypt report                          │
+   │  ├─ Start TCP streaming server (background) │
+   │  └─ Start Web API server (background)       │
+   └─────────────────────────────────────────────┘
+
+3. Start Report Streaming Server (optional):
+   $ cargo run --bin report_streaming
+
+   Launches standalone TCP streaming server on 127.0.0.1:8080
+
+4. Start Web Dashboard (optional):
+   $ cargo run --bin web_dashboard
+
+   Launches standalone HTTP API server on 127.0.0.1:8080/report
+
+5. Access Reports:
+   - Via browser: http://127.0.0.1:8080/report
+   - Via curl: curl -H "Authorization: Bearer SECRET_TOKEN" \
+                    http://127.0.0.1:8080/report
+
+
+================================================================================
+                          LIMITATIONS
+================================================================================
+
+1. Incomplete Support for COBOL File Handling
+   - Does not fully support complex COBOL file operations
+   - Indexed and relative file access not supported
+   - Sequential file processing less efficient than COBOL
+   - No automatic file record locking for concurrent processing
+
+2. Limited SQL Translation
+   - Detects EXEC SQL ... END-EXEC blocks
+   - Does not translate to functional Fortran SQL equivalents
+   - No direct database connectivity in generated code
+   - No support for embedded SQL statements within procedures
+
+3. Lack of COBOL REPORT-WRITER Handling
+   - COBOL's REPORT-WRITER feature not implemented
+   - No built-in support for structured report formatting in Fortran
+
+4. No Support for COBOL Screens Section
+   - COBOL's SCREENS SECTION (UI features) not translated
+   - User interfaces not mapped to Fortran UI equivalents
+
+5. Limited Support for COBOL Subroutine Calls
+   - CALL statements not yet fully mapped to Fortran subroutines
+   - Inter-module COBOL procedure communication not converted
+
+6. No Advanced COBOL Data Types Handling
+   - Does not fully support COBOL's PIC clauses and redefines
+   - Fortran's simpler data structures may cause detail loss
+
+
+================================================================================
+                          FUTURE ENHANCEMENTS
+================================================================================
+
+Potential improvements for the compiler:
+
+1. Enhanced SQL Translation
+   - Full EXEC SQL block translation to Fortran SQL
+   - Database connectivity integration
+   - Support for multiple database backends
+
+2. Advanced File Handling
+   - Indexed file access support
+   - Relative file access support
+   - File locking mechanisms
+
+3. Data Type Support
+   - Complete PIC clause translation
+   - REDEFINES support
+   - Complex data structure mapping
+
+4. COBOL Features
+   - REPORT-WRITER implementation
+   - SCREENS SECTION translation
+   - Complete CALL statement support
+
+5. Performance Optimizations
+   - Parallel compilation support
+   - Code optimization passes
+   - Memory-efficient AST representation
+
+6. Developer Tools
+   - Interactive debugging
+   - Source-to-source mapping
+   - Error reporting improvements
+   - Migration validation tools
+
+
+================================================================================
+                              END OF DOCUMENT
+================================================================================

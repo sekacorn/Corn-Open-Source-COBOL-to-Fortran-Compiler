@@ -1,0 +1,297 @@
+================================================================================
+              CORN COBOL-TO-FORTRAN COMPILER
+           COMMERCIAL LICENSE AND REVENUE SHARE AGREEMENT
+================================================================================
+
+Copyright (c) 2025 sekacorn
+Contact: sekacorn@gmail.com
+All rights reserved.
+
+This Commercial License Agreement ("Agreement") is entered into between
+sekacorn ("Licensor") and the licensee ("Licensee") for the use of the
+Corn COBOL-to-Fortran Compiler ("Software").
+
+Jurisdiction: United States of America, State of Maryland
+
+
+================================================================================
+1. GRANT OF COMMERCIAL LICENSE
+================================================================================
+
+Subject to the terms and conditions of this Agreement, Licensor hereby grants
+Licensee a non-exclusive, worldwide license to use, modify, and distribute the
+Software for commercial purposes, including but not limited to:
+
+(a) Integration into commercial products or services
+(b) Use in commercial software development
+(c) Provision of migration services using the Software
+(d) Distribution as part of commercial offerings
+(e) Sublicensing to end customers as part of services
+
+
+================================================================================
+2. REVENUE SHARE OBLIGATION
+================================================================================
+
+2.1 GROSS REVENUE SHARE
+    Licensee agrees to pay Licensor six percent (6%) of all Gross Revenue
+    generated directly or indirectly from the use, distribution, or
+    deployment of this Software.
+
+2.2 DEFINITION OF GROSS REVENUE
+    "Gross Revenue" means all revenue received by Licensee from:
+
+    (a) Sales of products or services that incorporate the Software
+    (b) Licensing fees charged to customers for Software usage
+    (c) Service fees for migration projects using the Software
+    (d) Subscription fees for services powered by the Software
+    (e) Consulting fees for projects utilizing the Software
+    (f) Any other income directly attributable to the Software
+
+    Gross Revenue is calculated BEFORE deduction of any costs, expenses,
+    taxes, or other charges.
+
+2.3 MINIMUM ANNUAL PAYMENT
+    If Licensee generates Gross Revenue from the Software, the minimum
+    annual payment shall be $1,000 USD or 6% of Gross Revenue, whichever
+    is greater.
+
+2.4 NO REVENUE SHARE FOR NON-COMMERCIAL USE
+    Revenue share obligations only apply to commercial use. Internal use
+    for evaluation, testing, or non-revenue-generating purposes does not
+    incur revenue share obligations, but still requires this license.
+
+
+================================================================================
+3. PAYMENT TERMS
+================================================================================
+
+3.1 REPORTING PERIOD
+    Licensee shall report Gross Revenue quarterly:
+    - Q1: January 1 - March 31 (Report due April 15)
+    - Q2: April 1 - June 30 (Report due July 15)
+    - Q3: July 1 - September 30 (Report due October 15)
+    - Q4: October 1 - December 31 (Report due January 15)
+
+3.2 PAYMENT DUE DATE
+    Payment of 6% of Gross Revenue is due within 30 days of each
+    quarterly report.
+
+3.3 PAYMENT METHOD
+    Payments shall be made to sekacorn via:
+    - Wire transfer
+    - ACH transfer
+    - Check payable to sekacorn
+    - Other methods as mutually agreed upon
+
+    Contact sekacorn@gmail.com for payment instructions.
+
+3.4 CURRENCY
+    All payments shall be made in United States Dollars (USD).
+
+3.5 RECORDS AND AUDIT
+    Licensee shall maintain accurate records of all Gross Revenue
+    attributable to the Software for a minimum of five (5) years.
+
+    Licensor reserves the right to audit Licensee's records upon
+    reasonable notice (minimum 30 days) to verify compliance with
+    revenue reporting obligations. Audits shall be conducted no more
+    than once per calendar year unless discrepancies are found.
+
+    If an audit reveals underreporting exceeding 5%, Licensee shall
+    reimburse Licensor for the full cost of the audit in addition to
+    paying all owed amounts plus interest.
+
+
+================================================================================
+4. LICENSE RESTRICTIONS
+================================================================================
+
+4.1 Licensee MAY:
+    - Use the Software for commercial purposes
+    - Modify the Software for internal or customer use
+    - Distribute modified versions to customers as part of services
+    - Incorporate the Software into commercial products
+    - Sublicense the Software to customers (subject to revenue share)
+
+4.2 Licensee MAY NOT:
+    - Remove or modify copyright notices or license terms
+    - Claim ownership of the original Software
+    - Redistribute the Software as a standalone compiler without approval
+    - Use the name "sekacorn" or "Corn Compiler" in misleading ways
+    - Violate export control laws or regulations
+    - Evade or circumvent revenue reporting obligations
+
+
+================================================================================
+5. INTELLECTUAL PROPERTY RIGHTS
+================================================================================
+
+5.1 OWNERSHIP
+    All intellectual property rights in the Software, including but not
+    limited to copyrights, patents, trade secrets, and trademarks, remain
+    the exclusive property of sekacorn.
+
+5.2 MODIFICATIONS
+    Modifications made by Licensee to the Software remain subject to this
+    Agreement. Licensee retains ownership of their specific modifications
+    but grants Licensor a perpetual, royalty-free license to incorporate
+    such modifications into the Software.
+
+5.3 ATTRIBUTION
+    All distributions of the Software or derivative works must include
+    attribution to sekacorn and reference to this license.
+
+
+================================================================================
+6. WARRANTY DISCLAIMER
+================================================================================
+
+THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+
+LICENSOR DOES NOT WARRANT THAT THE SOFTWARE WILL MEET LICENSEE'S REQUIREMENTS
+OR THAT OPERATION OF THE SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE.
+
+
+================================================================================
+7. LIMITATION OF LIABILITY
+================================================================================
+
+IN NO EVENT SHALL LICENSOR BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT,
+OR CONSEQUENTIAL DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES
+FOR LOSS OF BUSINESS PROFITS, BUSINESS INTERRUPTION, LOSS OF BUSINESS
+INFORMATION, OR ANY OTHER PECUNIARY LOSS) ARISING OUT OF THE USE OF OR
+INABILITY TO USE THE SOFTWARE, EVEN IF LICENSOR HAS BEEN ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGES.
+
+LICENSOR'S TOTAL LIABILITY SHALL NOT EXCEED THE AMOUNT PAID BY LICENSEE TO
+LICENSOR IN THE TWELVE (12) MONTHS PRECEDING THE CLAIM.
+
+
+================================================================================
+8. TERM AND TERMINATION
+================================================================================
+
+8.1 TERM
+    This license is perpetual unless terminated as provided herein.
+
+8.2 TERMINATION FOR BREACH
+    Licensor may terminate this license immediately upon written notice if:
+
+    (a) Licensee fails to pay required revenue share within 60 days
+    (b) Licensee fails to provide required quarterly reports
+    (c) Licensee materially breaches any other term of this Agreement
+    (d) Licensee becomes insolvent or files for bankruptcy
+
+8.3 EFFECT OF TERMINATION
+    Upon termination:
+
+    (a) Licensee must cease all use of the Software
+    (b) Licensee must pay all outstanding revenue share amounts
+    (c) Licensee must destroy or return all copies of the Software
+    (d) Provisions regarding payment, audit, and confidentiality survive
+
+
+================================================================================
+9. GOVERNING LAW AND DISPUTE RESOLUTION
+================================================================================
+
+9.1 GOVERNING LAW
+    This Agreement shall be governed by and construed in accordance with
+    the laws of the State of Maryland, United States of America, without
+    regard to conflicts of law principles.
+
+9.2 JURISDICTION
+    Any legal action or proceeding relating to this Agreement shall be
+    brought exclusively in the state or federal courts located in Maryland,
+    and all parties consent to the jurisdiction of such courts.
+
+9.3 DISPUTE RESOLUTION
+    Before initiating litigation, parties agree to attempt resolution
+    through good-faith negotiation for a period of 30 days. If negotiation
+    fails, disputes may be submitted to binding arbitration in Maryland
+    under the rules of the American Arbitration Association.
+
+
+================================================================================
+10. GENERAL PROVISIONS
+================================================================================
+
+10.1 ENTIRE AGREEMENT
+     This Agreement constitutes the entire agreement between the parties
+     regarding the Software and supersedes all prior agreements.
+
+10.2 AMENDMENTS
+     This Agreement may only be amended by written agreement signed by
+     both parties. Licensor reserves the right to update terms for new
+     versions of the Software.
+
+10.3 SEVERABILITY
+     If any provision is found invalid or unenforceable, the remaining
+     provisions shall remain in full force and effect.
+
+10.4 WAIVER
+     Failure to enforce any provision shall not constitute a waiver of
+     that or any other provision.
+
+10.5 ASSIGNMENT
+     Licensee may not assign this Agreement without prior written consent
+     of Licensor. Licensor may assign this Agreement without restriction.
+
+10.6 NOTICES
+     All notices shall be sent to:
+     sekacorn
+     Email: sekacorn@gmail.com
+
+     Licensee must provide current contact information for notice purposes.
+
+10.7 EXPORT COMPLIANCE
+     Licensee agrees to comply with all applicable export control laws
+     and regulations.
+
+
+================================================================================
+11. ACCEPTANCE
+================================================================================
+
+BY USING THE SOFTWARE FOR COMMERCIAL PURPOSES, LICENSEE ACKNOWLEDGES THAT
+LICENSEE HAS READ THIS AGREEMENT, UNDERSTANDS IT, AND AGREES TO BE BOUND BY
+ITS TERMS AND CONDITIONS.
+
+If you do not agree to these terms, you must use the Software under the
+Open Source License (see LICENSE-OPEN-SOURCE.txt) for non-commercial
+purposes only.
+
+
+================================================================================
+12. COMMERCIAL LICENSE ACTIVATION
+================================================================================
+
+To activate your Commercial License, contact:
+
+sekacorn
+Email: sekacorn@gmail.com
+
+Provide the following information:
+- Company/Organization name
+- Contact person and title
+- Billing address
+- Email address for invoices and reports
+- Intended use of the Software
+- Estimated annual Gross Revenue from Software use
+
+Upon receiving activation confirmation, you may use the Software for
+commercial purposes subject to the revenue share obligation.
+
+
+================================================================================
+                    END OF COMMERCIAL LICENSE
+================================================================================
+
+For questions or to activate your commercial license, contact:
+sekacorn@gmail.com
+
+Last Updated: 2025-11-09
+Version: 1.0

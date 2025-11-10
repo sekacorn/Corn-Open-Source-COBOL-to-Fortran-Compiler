@@ -1,0 +1,237 @@
+================================================================================
+                  COPYRIGHT AND INTELLECTUAL PROPERTY NOTICE
+================================================================================
+
+CORN COBOL-TO-FORTRAN COMPILER
+
+Copyright (c) 2025 sekacorn
+All rights reserved.
+
+Contact: sekacorn@gmail.com
+Jurisdiction: United States of America, State of Maryland
+
+
+================================================================================
+ORIGINAL WORK DECLARATION
+================================================================================
+
+This software is an original work created by sekacorn. All source code,
+algorithms, documentation, and associated materials were developed
+independently without incorporating third-party copyrighted code.
+
+
+================================================================================
+COPYRIGHT OWNERSHIP
+================================================================================
+
+All intellectual property rights in this software, including but not limited to:
+
+- Source code and object code
+- Algorithms and data structures
+- Documentation and specifications
+- Design patterns and architectures
+- Test suites and examples
+- Build scripts and configuration files
+
+are owned exclusively by sekacorn.
+
+
+================================================================================
+THIRD-PARTY COMPONENTS
+================================================================================
+
+This software uses the following third-party libraries, each under their
+respective licenses:
+
+1. Rust Programming Language
+   License: MIT / Apache 2.0
+   Copyright: The Rust Project Developers
+   Use: Programming language and standard library
+
+2. aes-gcm (Version 0.9)
+   License: MIT / Apache 2.0
+   Copyright: RustCrypto Developers
+   Use: AES-256-GCM encryption
+
+3. actix-web (Version 4)
+   License: MIT / Apache 2.0
+   Copyright: Actix Team
+   Use: Web framework for API
+
+4. rand (Version 0.8)
+   License: MIT / Apache 2.0
+   Copyright: Rust Random Developers
+   Use: Random number generation
+
+5. tokio (Version 1)
+   License: MIT
+   Copyright: Tokio Contributors
+   Use: Async runtime
+
+6. reqwest (Version 0.11)
+   License: MIT / Apache 2.0
+   Copyright: Sean McArthur
+   Use: HTTP client
+
+7. flate2 (Version 1.0)
+   License: MIT / Apache 2.0
+   Copyright: Alex Crichton
+   Use: Compression
+
+8. serde (Version 1.0)
+   License: MIT / Apache 2.0
+   Copyright: Erick Tryzelaar and David Tolnay
+   Use: Serialization
+
+9. serde_json (Version 1.0)
+   License: MIT / Apache 2.0
+   Copyright: Erick Tryzelaar and David Tolnay
+   Use: JSON handling
+
+10. sqlx (Version 0.5)
+    License: MIT / Apache 2.0
+    Copyright: Ryan Leckey
+    Use: Database support
+
+All third-party libraries are used in compliance with their respective licenses.
+These libraries are not modified and are used as-is from their official sources.
+
+
+================================================================================
+NO COPYRIGHT INFRINGEMENT
+================================================================================
+
+This software does NOT incorporate:
+
+- COBOL compiler source code from IBM, Micro Focus, or other vendors
+- Fortran compiler source code from any vendor
+- Proprietary algorithms or trade secrets from third parties
+- Code copied from other COBOL-to-Fortran conversion tools
+- Documentation or specifications subject to third-party copyright
+
+All COBOL and Fortran language specifications used are based on publicly
+available standards (ANSI, ISO) which are not subject to copyright.
+
+
+================================================================================
+CLEAN ROOM IMPLEMENTATION
+================================================================================
+
+This compiler was developed using clean room design principles:
+
+1. Language specifications were obtained from public standards documents
+2. No reverse engineering of proprietary compilers was performed
+3. No decompilation of commercial software was conducted
+4. All algorithms were independently developed
+5. No confidential or proprietary information was used
+
+
+================================================================================
+CONTRIBUTIONS
+================================================================================
+
+All contributions to this project must be original work or properly licensed
+open source code. Contributors must sign a Contributor License Agreement (CLA)
+granting sekacorn rights to use, modify, and distribute contributions.
+
+See CONTRIBUTING.md for contribution guidelines.
+
+
+================================================================================
+TRADEMARK NOTICE
+================================================================================
+
+"Corn COBOL-to-Fortran Compiler" is a trademark of sekacorn.
+"Corn Compiler" is a trademark of sekacorn.
+
+Unauthorized use of these trademarks is prohibited.
+
+
+================================================================================
+COPYRIGHT NOTICES IN SOURCE FILES
+================================================================================
+
+All source files contain the following copyright header:
+
+    // Copyright (c) 2025 sekacorn
+    // Contact: sekacorn@gmail.com
+    // All rights reserved.
+    //
+    // This file is part of the Corn COBOL-to-Fortran Compiler.
+    // Licensed under the Corn Dual License.
+    // See LICENSE-COMMERCIAL.txt and LICENSE-OPEN-SOURCE.txt for details.
+
+This notice must not be removed or modified.
+
+
+================================================================================
+COPYRIGHT REGISTRATION
+================================================================================
+
+Copyright registration with the U.S. Copyright Office is pending/in process.
+
+Registration information will be updated upon completion.
+
+
+================================================================================
+INFRINGEMENT REPORTING
+================================================================================
+
+If you believe this software infringes on your copyright or intellectual
+property rights, please contact:
+
+sekacorn
+Email: sekacorn@gmail.com
+
+Please provide:
+- Identification of the copyrighted work claimed to be infringed
+- Identification of the allegedly infringing material
+- Your contact information
+- A statement of good faith belief
+- A statement under penalty of perjury that the information is accurate
+
+We will investigate all claims promptly and take appropriate action.
+
+
+================================================================================
+DMCA COMPLIANCE
+================================================================================
+
+This project complies with the Digital Millennium Copyright Act (DMCA).
+
+DMCA Agent Contact:
+sekacorn
+Email: sekacorn@gmail.com
+
+
+================================================================================
+EXPORT CONTROL
+================================================================================
+
+This software may be subject to U.S. Export Administration Regulations (EAR).
+
+Licensees are responsible for compliance with all applicable export control
+laws and regulations.
+
+
+================================================================================
+GENERAL NOTICE
+================================================================================
+
+This copyright notice serves as notification of copyright ownership and
+intellectual property rights. It does not constitute legal advice.
+
+For questions regarding copyright, licensing, or intellectual property,
+contact:
+
+sekacorn
+Email: sekacorn@gmail.com
+
+
+Last Updated: 2025-11-09
+Version: 1.0
+
+
+================================================================================
+                         END OF COPYRIGHT NOTICE
+================================================================================

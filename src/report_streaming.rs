@@ -1,8 +1,16 @@
+// Copyright (c) 2025 sekacorn
+// Contact: sekacorn@gmail.com
+// All rights reserved.
+//
+// This file is part of the Corn COBOL-to-Fortran Compiler.
+// Licensed under the Corn Dual License.
+// See LICENSE-COMMERCIAL.txt and LICENSE-OPEN-SOURCE.txt for details.
+
 //! This module enables real-time report streaming over TCP sockets.
 //! Now supports:
-//! ✅ Secure report streaming via TCP
-//! ✅ Ability to receive reports as a client
-//! ✅ Enhanced logging for debugging
+//! - Secure report streaming via TCP
+//! - Ability to receive reports as a client
+//! - Enhanced logging for debugging
 
 use std::net::{TcpListener, TcpStream};
 use std::io::{Write, BufReader, BufRead};
@@ -11,16 +19,16 @@ use std::io::{Write, BufReader, BufRead};
 /// - **address:** IP and port to listen on (e.g., `"127.0.0.1:8080"`).
 pub fn start_report_server(address: &str) -> std::io::Result<()> {
     let listener = TcpListener::bind(address)?;
-    println!("✅ Report server running on {}", address);
+    println!("Report server running on {}", address);
 
     for stream in listener.incoming() {
         match stream {
             Ok(mut stream) => {
-                println!("🔗 Client connected!");
+                println!("Client connected!");
                 send_report_data(&mut stream)?;
             }
             Err(e) => {
-                eprintln!("❌ Connection failed: {}", e);
+                eprintln!("Connection failed: {}", e);
             }
         }
     }
@@ -30,9 +38,9 @@ pub fn start_report_server(address: &str) -> std::io::Result<()> {
 /// **Sends the report data to a connected client.**
 /// - **stream:** TCP connection stream for sending data.
 fn send_report_data(stream: &mut TcpStream) -> std::io::Result<()> {
-    let report_data = "📊 Monthly Sales Report\nSales Amount: $5000\nRegion: North America\n";
+    let report_data = "Monthly Sales Report\nSales Amount: $5000\nRegion: North America\n";
     stream.write_all(report_data.as_bytes())?;
-    println!("✅ Report data successfully sent to client.");
+    println!("Report data successfully sent to client.");
     Ok(())
 }
 
@@ -45,6 +53,6 @@ pub fn receive_report_from_server(address: &str) -> std::io::Result<()> {
     let mut report = String::new();
 
     reader.read_line(&mut report)?;
-    println!("📥 Received Report:\n{}", report);
+    println!("Received Report:\n{}", report);
     Ok(())
 }

@@ -1,0 +1,276 @@
+================================================================================
+                    CORN COBOL-TO-FORTRAN COMPILER
+                         GETTING STARTED
+                    Banking Enterprise Edition v2.0
+================================================================================
+
+Copyright (c) 2025 sekacorn | sekacorn@gmail.com
+
+This is a 5-minute quick start guide to get you up and running.
+
+================================================================================
+                        STEP 1: INSTALL RUST
+================================================================================
+
+Check if Rust is already installed:
+  rustc --version
+
+If not installed, install Rust:
+
+Windows (PowerShell):
+  Invoke-WebRequest -Uri https://win.rustup.rs/ -OutFile rustup-init.exe
+  .\rustup-init.exe
+
+OR download from: https://rustup.rs/
+
+Linux/Mac:
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+After installation, restart your terminal and verify:
+  rustc --version
+  cargo --version
+
+Expected output:
+  rustc 1.70.0 (or newer)
+  cargo 1.70.0 (or newer)
+
+================================================================================
+                        STEP 2: BUILD THE COMPILER
+================================================================================
+
+Navigate to the project directory:
+  cd "C:\Users\sekac\OneDrive\Documents\My Project\Corn-Open-Source-COBOL-to-Fortran-Compiler"
+
+Build the compiler (debug mode):
+  cargo build
+
+OR build optimized version (recommended):
+  cargo build --release
+
+Wait for compilation to complete (1-2 minutes first time).
+
+Expected output:
+  Compiling cobol-fortran-compiler v0.1.0
+  Finished release [optimized] target(s) in XX.XXs
+
+================================================================================
+                        STEP 3: TEST THE COMPILER
+================================================================================
+
+Run the banking test suite:
+  cargo run --release test
+
+Expected output:
+  ================================================================================
+    CORN COBOL-TO-FORTRAN COMPILER - BANKING ENTERPRISE EDITION v2.0
+    Copyright (c) 2025 sekacorn
+    Contact: sekacorn@gmail.com
+  ================================================================================
+
+  Running Banking Test Suite...
+
+  Test file: banking_test_suite.cob
+  Compiling COBOL file: banking_test_suite.cob
+  Output Fortran file: banking_test_output.f90
+
+  Source file loaded: XXXX bytes
+
+  [Phase 1] Parsing COBOL code...
+    ✓ Parsing successful
+
+  [Phase 2] Processing COPY statements...
+    ✓ COPY statements processed
+
+  [Phase 3] Translating EXEC SQL blocks...
+    ✓ SQL translation complete
+
+  [Phase 4] Processing SORT/MERGE operations...
+    ✓ SORT/MERGE processing complete
+
+  [Phase 5] Generating Fortran code...
+    ✓ Fortran code generation complete
+
+  [Phase 6] Writing output file...
+    ✓ Output written to: banking_test_output.f90
+
+  ================================================================================
+  COMPILATION SUMMARY
+  ================================================================================
+  Status:           SUCCESS
+  Errors:           0
+  Warnings:         0
+
+  Compilation completed successfully with no issues.
+
+If you see "SUCCESS" - the compiler is working!
+
+================================================================================
+                        STEP 4: COMPILE YOUR OWN COBOL FILE
+================================================================================
+
+Basic usage:
+  cargo run --release compile <your-file.cob> -o <output.f90>
+
+Example:
+  cargo run --release compile myprogram.cob -o myprogram.f90
+
+The compiler will:
+  1. Parse your COBOL code
+  2. Process COPY statements
+  3. Translate SQL blocks
+  4. Process SORT/MERGE operations
+  5. Generate Fortran code with banking modules
+  6. Write output to the specified file
+
+================================================================================
+                        STEP 5: COMPILE AND RUN FORTRAN CODE
+================================================================================
+
+Install GFortran (if not already installed):
+
+Windows:
+  Download from: https://gcc.gnu.org/wiki/GFortranBinaries
+  Install MinGW-w64 with GFortran
+
+Linux:
+  sudo apt-get install gfortran
+
+Mac:
+  brew install gcc
+
+Verify installation:
+  gfortran --version
+
+Compile the generated Fortran code:
+  gfortran banking_test_output.f90 -o banking_test
+
+Run the program:
+  ./banking_test          (Linux/Mac)
+  banking_test.exe        (Windows)
+
+================================================================================
+                        COMMON COMMANDS
+================================================================================
+
+Show compiler version:
+  cargo run --release version
+
+Show help:
+  cargo run --release help
+
+Compile a file:
+  cargo run --release compile input.cob -o output.f90
+
+Run test suite:
+  cargo run --release test
+
+Clean and rebuild:
+  cargo clean
+  cargo build --release
+
+================================================================================
+                        WHAT TO DO NEXT
+================================================================================
+
+FOR LEARNING:
+  1. Read EXECUTIVE-SUMMARY.txt for project overview
+  2. Read QUICK-REFERENCE.txt for command reference
+  3. Read TRANSLATION-EXAMPLES.txt for code examples
+
+FOR COMMERCIAL USE:
+  1. Read COMMERCIAL-OVERVIEW.txt for sales materials
+  2. Read BANKING-EDITION-SUMMARY.txt for features
+  3. Read ENTERPRISE-DEPLOYMENT-GUIDE.txt for deployment
+
+FOR TECHNICAL DEEP DIVE:
+  1. Read INTEGRATION-COMPLETE.txt for technical details
+  2. Read Big-Picture-UML.txt for architecture
+  3. Review source code in src/ directory
+
+================================================================================
+                        TROUBLESHOOTING
+================================================================================
+
+PROBLEM: "cargo: command not found"
+SOLUTION: Rust not installed or not in PATH
+          Install from https://rustup.rs/
+          Restart terminal after installation
+
+PROBLEM: "error: could not compile"
+SOLUTION: Dependencies issue
+          Run: cargo clean
+          Then: cargo build --release
+          Check internet connection for dependency downloads
+
+PROBLEM: "file not found: banking_test_suite.cob"
+SOLUTION: File missing from project directory
+          Verify file exists in root directory
+          Check current directory: pwd (Linux/Mac) or cd (Windows)
+
+PROBLEM: "gfortran: command not found"
+SOLUTION: GFortran not installed
+          Install GFortran (see Step 5 above)
+
+PROBLEM: Fortran compilation errors
+SOLUTION: Generated code issue
+          Review generated .f90 file
+          Check COBOL input for unsupported features
+          Contact support: sekacorn@gmail.com
+
+================================================================================
+                        SUCCESS CHECKLIST
+================================================================================
+
+✓ Rust installed (rustc --version works)
+✓ Compiler builds (cargo build --release succeeds)
+✓ Test suite passes (cargo run test shows SUCCESS)
+✓ Can compile COBOL files (cargo run compile works)
+✓ GFortran installed (gfortran --version works)
+✓ Can compile Fortran output (gfortran output.f90 works)
+✓ Generated program runs (./program executes)
+
+If all checked, you're ready to use the compiler!
+
+================================================================================
+                        QUICK START COMPLETE
+================================================================================
+
+You now have a working COBOL-to-Fortran compiler ready for:
+  • Compiling legacy COBOL applications
+  • Generating production Fortran code
+  • Banking-grade precision arithmetic
+  • Enterprise deployments
+
+NEXT STEPS:
+  • Compile your own COBOL files
+  • Review documentation for advanced features
+  • Contact sekacorn@gmail.com for commercial licensing
+
+DOCUMENTATION:
+  EXECUTIVE-SUMMARY.txt       - Project overview
+  QUICK-REFERENCE.txt         - Command reference
+  COMMERCIAL-OVERVIEW.txt     - Sales materials
+  ENTERPRISE-DEPLOYMENT-GUIDE.txt - Production deployment
+
+SUPPORT:
+  Email: sekacorn@gmail.com
+  Response: 2 business days
+
+================================================================================
+                        READY TO GO!
+================================================================================
+
+The compiler is working and ready to use.
+
+Start compiling COBOL code now:
+  cargo run --release compile your-file.cob -o output.f90
+
+For help:
+  cargo run --release help
+
+For commercial licensing:
+  Email: sekacorn@gmail.com
+
+Good luck!
+
+Copyright (c) 2025 sekacorn

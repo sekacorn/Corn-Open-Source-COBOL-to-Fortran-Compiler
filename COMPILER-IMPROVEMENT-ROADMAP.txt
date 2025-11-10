@@ -1,0 +1,711 @@
+================================================================================
+        COBOL-to-Fortran Compiler - 100% Conversion Roadmap
+================================================================================
+
+GOAL: Achieve near-100% accurate conversion of COBOL programs to Fortran
+
+This document outlines the systematic approach to improve the compiler from its
+current state (approximately 15-20% coverage) to near-complete COBOL language
+support (targeting 95%+ coverage).
+
+
+================================================================================
+                    CURRENT STATE ANALYSIS
+================================================================================
+
+What Works Now (15-20% coverage):
+---------------------------------
+- Basic PROGRAM-ID parsing
+- Simple paragraph structure
+- DISPLAY statements
+- MOVE statements (basic)
+- STOP RUN
+- PERFORM (simple paragraph calls)
+- PERFORM UNTIL (basic loops)
+- PERFORM VARYING (basic counted loops)
+- Basic file operations (OPEN, READ, WRITE - limited)
+- EXEC SQL detection (no translation)
+
+Critical Missing Features (80-85% of COBOL):
+-------------------------------------------
+1. DATA DIVISION - 0% implemented
+   - No PIC clause parsing or translation
+   - No level number hierarchy support
+   - No REDEFINES, RENAMES, or complex data structures
+   - No VALUE clauses for initialization
+   - No 88-level condition names
+   - No OCCURS (arrays) support
+   - No working storage or file section handling
+
+2. PROCEDURE DIVISION - ~20% implemented
+   - Missing IF-THEN-ELSE statements
+   - Missing EVALUATE (CASE) statements
+   - Missing nested conditions
+   - Missing STRING/UNSTRING operations
+   - Missing INSPECT operations
+   - Missing SEARCH/SEARCH ALL
+   - Missing SORT/MERGE
+   - Missing GO TO and ALTER
+   - Missing ACCEPT statements
+   - Missing proper CALL with parameters
+
+3. File Handling - ~10% implemented
+   - No SELECT/ASSIGN support
+   - No FD (File Description) parsing
+   - No indexed or relative file organization
+   - No file status handling
+   - No REWRITE, DELETE operations
+   - No AT END clauses
+
+4. Arithmetic - ~30% implemented
+   - Basic COMPUTE works
+   - Missing ADD, SUBTRACT, MULTIPLY, DIVIDE statements
+   - Missing ROUNDED, ON SIZE ERROR
+   - Missing decimal arithmetic handling
+   - Missing GIVING clause
+
+5. Type System - 0% implemented
+   - No proper variable scoping
+   - No type inference from PIC clauses
+   - No symbol table
+   - No semantic analysis
+
+
+================================================================================
+                    IMPLEMENTATION ROADMAP
+================================================================================
+
+PHASE 1: Foundation (Weeks 1-2)
+===============================
+
+Priority: CRITICAL
+Goal: Build the infrastructure for proper parsing and code generation
+
+Tasks:
+------
+1.1 Symbol Table Implementation
+    - Create global symbol table for variables
+    - Track variable scope (WORKING-STORAGE, LOCAL-STORAGE, LINKAGE)
+    - Store type information, size, location
+
+1.2 Type System Foundation
+    - Define Fortran type mappings for COBOL PIC clauses
+    - PIC 9(n) -> INTEGER
+    - PIC X(n) -> CHARACTER(LEN=n)
+    - PIC S9(n)V9(m) -> REAL with proper decimal handling
+    - PIC A(n) -> CHARACTER(LEN=n)
+
+1.3 Enhanced AST Structure
+    - Add DataDivision node
+    - Add VariableDeclaration node with full PIC info
+    - Add proper scope tracking
+    - Add source location tracking for error messages
+
+Expected Outcome:
+- Symbol table can store all variable declarations
+- Type system can map COBOL types to Fortran types
+- AST can represent complete COBOL program structure
+
+
+PHASE 2: Data Division (Weeks 3-4)
+===================================
+
+Priority: CRITICAL
+Goal: Parse and translate all DATA DIVISION features
+
+Tasks:
+------
+2.1 Basic Data Division Parsing
+    - WORKING-STORAGE SECTION
+    - FILE SECTION
+    - LOCAL-STORAGE SECTION
+    - LINKAGE SECTION
+
+2.2 PIC Clause Parser
+    - PIC 9(n) - Numeric
+    - PIC X(n) - Alphanumeric
+    - PIC A(n) - Alphabetic
+    - PIC S9(n) - Signed numeric
+    - PIC 9(n)V9(m) - Decimal (implied decimal point)
+    - PIC $$$,$$9.99 - Edited numeric
+    - All picture character combinations
+
+2.3 Level Number Hierarchy
+    - 01-49 level data items (group and elementary)
+    - 66 level RENAMES
+    - 77 level independent items
+    - 88 level condition names
+    - Proper parent-child relationships
+
+2.4 Data Clauses
+    - VALUE clause (initialization)
+    - OCCURS clause (arrays/tables)
+    - OCCURS DEPENDING ON (dynamic arrays)
+    - REDEFINES clause (union types)
+    - USAGE clause (COMP, COMP-3, DISPLAY, etc.)
+    - SYNCHRONIZED clause
+    - JUSTIFIED clause
+
+2.5 Fortran Code Generation
+    - Generate appropriate Fortran TYPE definitions for groups
+    - Generate proper variable declarations
+    - Handle initialization with DATA statements
+    - Implement EQUIVALENCE for REDEFINES
+    - Create arrays for OCCURS
+
+Example Translation:
+-------------------
+COBOL:
+    01 EMPLOYEE-RECORD.
+       05 EMP-ID           PIC 9(6).
+       05 EMP-NAME         PIC X(30).
+       05 EMP-SALARY       PIC 9(7)V99.
+       05 EMP-DEPT         PIC X(10).
+
+Fortran:
+    TYPE EMPLOYEE_RECORD
+        INTEGER :: EMP_ID
+        CHARACTER(LEN=30) :: EMP_NAME
+        REAL :: EMP_SALARY
+        CHARACTER(LEN=10) :: EMP_DEPT
+    END TYPE EMPLOYEE_RECORD
+
+    TYPE(EMPLOYEE_RECORD) :: EMPLOYEE_RECORD_VAR
+
+Expected Outcome:
+- Can parse complete DATA DIVISION
+- Can translate all PIC clauses to Fortran types
+- Can handle complex data structures with proper nesting
+- Can generate correct Fortran TYPE definitions
+
+
+PHASE 3: Enhanced Procedure Division (Weeks 5-7)
+================================================
+
+Priority: CRITICAL
+Goal: Implement all common COBOL statements
+
+Tasks:
+------
+3.1 Conditional Statements
+    - IF-THEN-ELSE-END-IF
+    - Nested IF statements
+    - Complex conditions (AND, OR, NOT)
+    - Condition names (88-level)
+
+3.2 EVALUATE Statement (CASE)
+    - EVALUATE variable WHEN value
+    - WHEN OTHER clause
+    - Multiple WHEN conditions
+    - Complex EVALUATE expressions
+
+3.3 Arithmetic Statements
+    - ADD A TO B
+    - ADD A B GIVING C
+    - SUBTRACT A FROM B
+    - MULTIPLY A BY B
+    - DIVIDE A INTO B
+    - DIVIDE A BY B GIVING C REMAINDER D
+    - ROUNDED clause
+    - ON SIZE ERROR clause
+    - CORRESPONDING clause
+
+3.4 String Operations
+    - STRING source DELIMITED BY delimiter INTO target
+    - UNSTRING source DELIMITED BY delimiter INTO targets
+    - INSPECT statement (TALLYING, REPLACING)
+
+3.5 Table Operations
+    - SEARCH statement (linear search)
+    - SEARCH ALL (binary search)
+    - SET statement for indexes
+
+3.6 Additional Statements
+    - ACCEPT (input)
+    - INITIALIZE
+    - GO TO (with warning about structured programming)
+    - CONTINUE
+    - EXIT
+    - GOBACK
+
+Example Translation:
+-------------------
+COBOL:
+    IF EMP-SALARY > 50000
+       THEN
+           ADD 1 TO HIGH-EARNER-COUNT
+           COMPUTE BONUS = EMP-SALARY * 0.10
+       ELSE
+           ADD 1 TO REGULAR-COUNT
+    END-IF
+
+Fortran:
+    IF (EMP_SALARY > 50000.0) THEN
+        HIGH_EARNER_COUNT = HIGH_EARNER_COUNT + 1
+        BONUS = EMP_SALARY * 0.10
+    ELSE
+        REGULAR_COUNT = REGULAR_COUNT + 1
+    END IF
+
+Expected Outcome:
+- Can translate all common procedural statements
+- Handles complex nested logic
+- Proper arithmetic translation with appropriate error handling
+
+
+PHASE 4: Complete File Handling (Weeks 8-9)
+===========================================
+
+Priority: HIGH
+Goal: Full file I/O support for all COBOL file organizations
+
+Tasks:
+------
+4.1 Environment Division
+    - INPUT-OUTPUT SECTION
+    - FILE-CONTROL paragraph
+    - SELECT statements with ASSIGN
+    - ORGANIZATION clause (SEQUENTIAL, INDEXED, RELATIVE)
+    - ACCESS MODE clause
+    - FILE STATUS clause
+
+4.2 File Description (FD)
+    - Complete FD parsing
+    - RECORD CONTAINS clause
+    - BLOCK CONTAINS clause
+    - LABEL RECORDS clause
+
+4.3 File Operations
+    - OPEN (INPUT, OUTPUT, I-O, EXTEND)
+    - CLOSE
+    - READ with AT END and INVALID KEY
+    - WRITE with INVALID KEY
+    - REWRITE
+    - DELETE
+    - START (for indexed files)
+
+4.4 Fortran Translation
+    - Map to Fortran OPEN statements with proper parameters
+    - Implement file status handling
+    - Use appropriate Fortran I/O for different organizations
+    - Handle sequential vs direct access
+
+Example Translation:
+-------------------
+COBOL:
+    ENVIRONMENT DIVISION.
+    INPUT-OUTPUT SECTION.
+    FILE-CONTROL.
+        SELECT EMPLOYEE-FILE
+            ASSIGN TO "EMPLOYEES.DAT"
+            ORGANIZATION IS SEQUENTIAL
+            FILE STATUS IS WS-FILE-STATUS.
+
+    DATA DIVISION.
+    FILE SECTION.
+    FD EMPLOYEE-FILE.
+    01 EMPLOYEE-RECORD PIC X(100).
+
+    PROCEDURE DIVISION.
+        OPEN INPUT EMPLOYEE-FILE
+        READ EMPLOYEE-FILE
+            AT END
+                MOVE 'Y' TO EOF-FLAG
+        END-READ
+        CLOSE EMPLOYEE-FILE
+
+Fortran:
+    INTEGER :: EMPLOYEE_FILE_UNIT = 10
+    INTEGER :: IO_STAT
+    CHARACTER(LEN=2) :: WS_FILE_STATUS
+    CHARACTER(LEN=100) :: EMPLOYEE_RECORD
+
+    OPEN(UNIT=EMPLOYEE_FILE_UNIT, FILE='EMPLOYEES.DAT', &
+         STATUS='OLD', ACTION='READ', IOSTAT=IO_STAT)
+    WRITE(WS_FILE_STATUS, '(I2.2)') IO_STAT
+
+    READ(EMPLOYEE_FILE_UNIT, '(A)', IOSTAT=IO_STAT) EMPLOYEE_RECORD
+    IF (IO_STAT /= 0) THEN
+        EOF_FLAG = 'Y'
+    END IF
+
+    CLOSE(EMPLOYEE_FILE_UNIT)
+
+Expected Outcome:
+- Complete file handling for sequential files
+- Support for indexed file simulation
+- Proper error handling and file status codes
+
+
+PHASE 5: Advanced Features (Weeks 10-12)
+=========================================
+
+Priority: MEDIUM-HIGH
+Goal: Handle advanced COBOL features
+
+Tasks:
+------
+5.1 CALL Statement with Parameters
+    - CALL literal/identifier
+    - USING BY REFERENCE/BY CONTENT/BY VALUE
+    - Parameter passing translation
+
+5.2 COPY Statement
+    - Parse COPY directives
+    - Include copybook content
+    - REPLACING clause
+
+5.3 Intrinsic Functions
+    - CURRENT-DATE
+    - LENGTH
+    - REVERSE
+    - UPPER-CASE/LOWER-CASE
+    - NUMVAL, NUMVAL-C
+    - All common COBOL intrinsic functions
+
+5.4 SORT/MERGE
+    - SORT statement
+    - INPUT PROCEDURE / OUTPUT PROCEDURE
+    - USING / GIVING
+
+5.5 Nested Programs
+    - Nested program structure
+    - COMMON clause
+    - EXTERNAL clause
+    - GLOBAL clause
+
+Expected Outcome:
+- Can handle modular COBOL programs
+- Support for copybooks
+- Intrinsic function translation
+
+
+PHASE 6: SQL Integration (Weeks 13-14)
+======================================
+
+Priority: MEDIUM
+Goal: Translate embedded SQL to Fortran SQL
+
+Tasks:
+------
+6.1 EXEC SQL Block Parsing
+    - Parse complete SQL statements
+    - Identify host variables
+    - Handle cursors
+
+6.2 SQL Statement Translation
+    - SELECT INTO
+    - INSERT, UPDATE, DELETE
+    - DECLARE CURSOR
+    - OPEN, FETCH, CLOSE cursor
+    - COMMIT, ROLLBACK
+
+6.3 Host Variable Handling
+    - :host-variable syntax
+    - Indicator variables
+    - Type conversion
+
+6.4 Fortran SQL Generation
+    - Generate appropriate Fortran SQL preprocessor directives
+    - Use Fortran SQL standards (ISO/IEC 1989)
+    - Handle error codes (SQLCODE, SQLSTATE)
+
+Expected Outcome:
+- Full EXEC SQL translation
+- Proper database connectivity in Fortran
+
+
+PHASE 7: Error Handling & Validation (Weeks 15-16)
+==================================================
+
+Priority: HIGH
+Goal: Robust error detection and helpful messages
+
+Tasks:
+------
+7.1 Syntax Error Detection
+    - Detailed error messages with line numbers
+    - Suggestions for fixes
+    - Multiple error reporting (don't stop at first error)
+
+7.2 Semantic Validation
+    - Undefined variable detection
+    - Type mismatch detection
+    - Unreachable code warnings
+    - Unused variable warnings
+
+7.3 COBOL Standards Compliance
+    - COBOL-85 support
+    - COBOL-2002 features
+    - Dialect-specific handling
+
+7.4 Fortran Standards Target
+    - Generate Fortran 90/95 by default
+    - Option for Fortran 2003/2008
+    - Standard-compliant output
+
+Expected Outcome:
+- Helpful error messages
+- Catches common mistakes
+- Validates generated Fortran code
+
+
+PHASE 8: Testing & Validation (Weeks 17-18)
+===========================================
+
+Priority: CRITICAL
+Goal: Ensure compiler reliability
+
+Tasks:
+------
+8.1 Test Suite Creation
+    - Unit tests for each parser component
+    - Integration tests for complete programs
+    - Real-world COBOL program samples
+    - Financial calculation tests
+    - File processing tests
+
+8.2 Comparison Testing
+    - Run same inputs through COBOL and Fortran
+    - Compare outputs for accuracy
+    - Performance benchmarking
+
+8.3 Edge Case Testing
+    - Boundary conditions
+    - Complex nesting
+    - Large data structures
+    - Performance with large files
+
+8.4 Documentation
+    - User guide
+    - Migration guide
+    - Known limitations
+    - Best practices
+
+Expected Outcome:
+- Comprehensive test coverage
+- Verified accuracy of translation
+- Production-ready compiler
+
+
+PHASE 9: Optimization & Polish (Weeks 19-20)
+============================================
+
+Priority: MEDIUM
+Goal: Performance and usability improvements
+
+Tasks:
+------
+9.1 Code Optimization
+    - Optimize generated Fortran code
+    - Remove redundant operations
+    - Efficient memory usage
+
+9.2 CLI Improvements
+    - Command-line options
+    - Batch processing
+    - Configuration files
+
+9.3 IDE Integration
+    - Syntax highlighting
+    - Error reporting
+    - Debug information preservation
+
+9.4 Performance Tuning
+    - Faster parsing
+    - Incremental compilation
+    - Parallel processing
+
+Expected Outcome:
+- Professional-grade tool
+- Easy to use
+- Fast compilation
+
+
+================================================================================
+                    CRITICAL SUCCESS FACTORS
+================================================================================
+
+1. Complete Data Division Support
+   - This is THE most important feature
+   - Without proper data type handling, nothing else works correctly
+   - PIC clause translation is absolutely critical
+
+2. Comprehensive Statement Coverage
+   - Must support at least 90% of commonly used COBOL statements
+   - IF, PERFORM, EVALUATE, arithmetic, string operations are essential
+
+3. Accurate Type Mapping
+   - COBOL and Fortran have different type systems
+   - Must preserve semantics while changing syntax
+   - Decimal arithmetic is critical for financial applications
+
+4. File I/O Compatibility
+   - Most COBOL programs are file-processing heavy
+   - Must handle sequential files at minimum
+   - Indexed file simulation or translation required
+
+5. Extensive Testing
+   - Real-world COBOL programs must compile and run correctly
+   - Output must match COBOL output exactly
+   - Edge cases must be handled
+
+
+================================================================================
+                    TECHNICAL CHALLENGES & SOLUTIONS
+================================================================================
+
+Challenge 1: COBOL PIC Clauses vs Fortran Types
+-----------------------------------------------
+Problem: COBOL has very flexible picture clauses that don't map 1:1 to Fortran
+
+Solution:
+- Create custom Fortran modules for decimal arithmetic
+- Use CHARACTER arrays for complex edited pictures
+- Implement conversion functions for formatted I/O
+- Use REAL with scaling for fixed-point decimal
+
+Challenge 2: COBOL REDEFINES vs Fortran
+---------------------------------------
+Problem: COBOL REDEFINES allows multiple views of same memory, Fortran has
+limited support
+
+Solution:
+- Use Fortran EQUIVALENCE statement
+- Use TYPE with SEQUENCE attribute
+- Use TRANSFER intrinsic for type punning
+- Create union-like structures with derived types
+
+Challenge 3: COBOL File Organizations
+-------------------------------------
+Problem: COBOL has INDEXED and RELATIVE file organizations that don't exist
+in Fortran
+
+Solution:
+- Implement indexed file access using direct access files with index
+- Create Fortran modules that simulate COBOL file operations
+- Use ISAM libraries if available on target platform
+- Provide runtime library for file operations
+
+Challenge 4: COBOL Level Numbers vs Fortran Structures
+------------------------------------------------------
+Problem: COBOL's hierarchical level numbers are more flexible than Fortran TYPEs
+
+Solution:
+- Parse level number hierarchy into tree structure
+- Generate nested TYPE definitions
+- Flatten when necessary for compatibility
+- Handle edge cases like level 77 items
+
+Challenge 5: COBOL PERFORM vs Fortran DO/CALL
+---------------------------------------------
+Problem: COBOL PERFORM can call paragraphs or inline code, with complex variations
+
+Solution:
+- Convert PERFORM paragraph-name to CALL subroutine
+- Convert PERFORM UNTIL to DO WHILE
+- Convert PERFORM VARYING to DO loop
+- Inline simple PERFORMs when appropriate
+
+Challenge 6: COBOL Implicit Declarations
+----------------------------------------
+Problem: COBOL doesn't require explicit declarations in PROCEDURE DIVISION
+
+Solution:
+- Require complete DATA DIVISION
+- Build symbol table during DATA DIVISION parsing
+- Validate all variable references
+- Error if undeclared variable used
+
+Challenge 7: COBOL Condition Names (88-level)
+---------------------------------------------
+Problem: COBOL 88-level condition names are like enum-style constants
+
+Solution:
+- Generate Fortran LOGICAL functions
+- Use PARAMETER for constant values
+- Create helper functions for complex conditions
+- Document generated code clearly
+
+
+================================================================================
+                    ESTIMATED COVERAGE BY PHASE
+================================================================================
+
+Current:                15-20%
+After Phase 1:          25%
+After Phase 2:          50%  (Data Division is huge)
+After Phase 3:          75%  (Most statements covered)
+After Phase 4:          85%  (File I/O complete)
+After Phase 5:          92%  (Advanced features)
+After Phase 6:          95%  (SQL support)
+After Phases 7-9:       98%+ (Polish and edge cases)
+
+Remaining 2%: Exotic features, vendor-specific extensions, deprecated features
+
+
+================================================================================
+                    RESOURCE REQUIREMENTS
+================================================================================
+
+Development Time:
+- Core team: 2-3 developers
+- Timeline: 20 weeks for complete implementation
+- Testing: Additional 4-6 weeks
+- Total: 6-7 months to production-ready
+
+Skills Needed:
+- Deep COBOL knowledge
+- Fortran expertise
+- Compiler design experience
+- Parser/lexer implementation
+- Financial domain knowledge (for testing)
+
+Tools:
+- Rust development environment
+- COBOL compiler for testing
+- Fortran compiler for validation
+- Extensive COBOL code samples
+- Automated testing framework
+
+
+================================================================================
+                    NEXT IMMEDIATE STEPS
+================================================================================
+
+Week 1 Tasks (Starting Now):
+----------------------------
+
+1. Implement Symbol Table
+   - Create SymbolTable struct
+   - Add insert/lookup methods
+   - Track variable scope and type
+
+2. Expand AST Nodes
+   - Add DataDivision struct
+   - Add VariableDeclaration struct
+   - Add proper type information
+
+3. Create PIC Clause Parser
+   - Parse basic numeric PIC (PIC 9(n))
+   - Parse alphanumeric PIC (PIC X(n))
+   - Parse signed numeric PIC (PIC S9(n))
+   - Parse decimal PIC (PIC 9(n)V9(m))
+
+4. Begin Data Division Parsing
+   - Parse WORKING-STORAGE SECTION
+   - Parse level numbers (01-49, 77)
+   - Parse VALUE clauses
+
+5. Improve Fortran Code Generation
+   - Generate proper variable declarations from PIC
+   - Generate TYPE definitions for groups
+   - Handle initialization
+
+These immediate improvements will increase coverage from ~15% to ~35% and
+establish the foundation for all future development.
+
+
+================================================================================
+                    END OF ROADMAP
+================================================================================

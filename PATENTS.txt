@@ -1,0 +1,281 @@
+================================================================================
+                         PATENT NOTICE AND GRANT
+================================================================================
+
+CORN COBOL-TO-FORTRAN COMPILER
+
+Copyright (c) 2025 sekacorn
+Contact: sekacorn@gmail.com
+All rights reserved.
+
+Jurisdiction: United States of America, State of Maryland
+
+
+================================================================================
+PATENT POLICY
+================================================================================
+
+This document describes the patent policy for the Corn COBOL-to-Fortran
+Compiler ("Software").
+
+
+================================================================================
+1. PATENT OWNERSHIP
+================================================================================
+
+Any patents, patent applications, or patentable inventions related to this
+Software are owned by sekacorn.
+
+Current Status:
+- Patent applications: Pending/In preparation
+- Granted patents: None (as of 2025-11-09)
+- Patent strategy: Defensive patent portfolio
+
+
+================================================================================
+2. PATENT GRANT FOR NON-COMMERCIAL USE
+================================================================================
+
+Subject to the terms of LICENSE-OPEN-SOURCE.txt, sekacorn hereby grants to
+any person or organization using the Software for non-commercial purposes
+a worldwide, royalty-free, non-exclusive, perpetual patent license to:
+
+(a) Use the Software
+(b) Modify the Software
+(c) Distribute copies of the Software
+
+This patent grant applies ONLY to non-commercial use as defined in
+LICENSE-OPEN-SOURCE.txt.
+
+
+================================================================================
+3. PATENT GRANT FOR COMMERCIAL USE
+================================================================================
+
+Commercial use of the Software requires a Commercial License as defined in
+LICENSE-COMMERCIAL.txt.
+
+The Commercial License includes:
+
+(a) A patent license for commercial use of the Software
+(b) Protection from patent infringement claims by sekacorn
+(c) Right to use patented methods and algorithms in commercial applications
+
+The patent license for commercial use is granted upon:
+
+(a) Execution of the Commercial License Agreement
+(b) Compliance with revenue share obligations (6% of gross revenue)
+(c) Payment of all fees and royalties as specified
+
+
+================================================================================
+4. DEFENSIVE PATENT STRATEGY
+================================================================================
+
+4.1 PURPOSE
+    Patents related to this Software are maintained for defensive purposes to:
+
+    (a) Protect against patent trolls and frivolous litigation
+    (b) Ensure freedom to operate for legitimate users
+    (c) Enable cross-licensing with other organizations
+    (d) Prevent patent blocking by competitors
+
+4.2 NON-ASSERTION PLEDGE
+    sekacorn pledges not to assert patent claims against:
+
+    (a) Non-commercial users complying with LICENSE-OPEN-SOURCE.txt
+    (b) Commercial licensees complying with LICENSE-COMMERCIAL.txt
+    (c) Contributors to this Software who have signed a CLA
+    (d) Users of similar technologies who do not assert patents against us
+
+
+================================================================================
+5. PATENT RETALIATION CLAUSE
+================================================================================
+
+If any licensee (commercial or non-commercial) initiates patent litigation
+against sekacorn or this Software, then:
+
+(a) All patent licenses granted to that licensee terminate immediately
+(b) All other licenses granted to that licensee may be terminated
+(c) The licensee must cease all use of the Software
+(d) sekacorn reserves all rights to counter-sue for patent infringement
+
+
+================================================================================
+6. CONTRIBUTOR PATENT GRANT
+================================================================================
+
+Any person or organization that contributes code to this Software grants to
+sekacorn and all users of the Software a worldwide, royalty-free,
+non-exclusive, perpetual patent license for any patents covering their
+contributions.
+
+This is outlined in detail in the Contributor License Agreement (CLA).
+
+
+================================================================================
+7. POTENTIAL PATENTABLE INVENTIONS
+================================================================================
+
+The following aspects of the Software may be subject to patent protection:
+
+7.1 COBOL DATA STRUCTURE TRANSLATION
+    - Novel methods for translating COBOL PIC clauses to Fortran types
+    - Hierarchical data structure mapping algorithms
+    - OCCURS clause to array conversion techniques
+    - REDEFINES clause to EQUIVALENCE translation
+
+7.2 PROCEDURE DIVISION TRANSLATION
+    - COBOL to Fortran statement mapping algorithms
+    - Control flow graph transformation methods
+    - Paragraph to subroutine conversion techniques
+    - PERFORM statement optimization
+
+7.3 SQL INTEGRATION
+    - EXEC SQL block translation methods
+    - Host variable mapping algorithms
+    - Cursor operation translation
+    - Database independence layer
+
+7.4 TYPE SYSTEM
+    - PIC clause parser and interpreter
+    - Type inference algorithms
+    - Precision preservation methods
+    - Decimal arithmetic translation
+
+7.5 OPTIMIZATION TECHNIQUES
+    - Dead code elimination in translated code
+    - Common subexpression elimination across languages
+    - Loop optimization during translation
+    - Memory layout optimization
+
+Note: The above list is illustrative and not exhaustive. Actual patent
+applications may cover additional or different aspects.
+
+
+================================================================================
+8. THIRD-PARTY PATENTS
+================================================================================
+
+8.1 NO KNOWN INFRINGEMENT
+    To the best of sekacorn's knowledge, this Software does not infringe
+    on any third-party patents.
+
+8.2 INDEPENDENT DEVELOPMENT
+    All algorithms and methods were independently developed without
+    reference to patented technologies.
+
+8.3 PUBLIC STANDARDS
+    The Software implements publicly available COBOL and Fortran language
+    standards, which are not subject to patent restrictions.
+
+8.4 INDEMNIFICATION (COMMERCIAL LICENSE ONLY)
+    Commercial licensees receive limited patent indemnification as
+    specified in LICENSE-COMMERCIAL.txt, subject to the revenue share
+    agreement.
+
+
+================================================================================
+9. PATENT SEARCH AND CLEARANCE
+================================================================================
+
+sekacorn has conducted reasonable patent searches to identify potential
+conflicts, including:
+
+- USPTO patent database searches
+- European Patent Office database searches
+- Google Patents searches
+- Prior art searches
+
+No material conflicts were identified. However, patent clearance is not
+guaranteed, and users should conduct their own patent analysis for
+mission-critical applications.
+
+
+================================================================================
+10. NOTIFICATION OF PATENT ISSUES
+================================================================================
+
+If you become aware of any patent that you believe is infringed by this
+Software, or if you hold patents that you believe are infringed, please
+notify:
+
+sekacorn
+Email: sekacorn@gmail.com
+
+Please provide:
+- Patent number(s)
+- Jurisdiction
+- Specific claims you believe are infringed
+- Evidence of infringement
+
+We will investigate all claims and take appropriate action, which may include:
+- Licensing the patent
+- Designing around the patent
+- Challenging the patent's validity
+- Removing infringing functionality
+
+
+================================================================================
+11. PATENT LICENSING FOR IMPLEMENTERS
+================================================================================
+
+Organizations implementing their own COBOL-to-Fortran compilers may be
+interested in licensing patents related to this Software.
+
+For patent licensing inquiries, contact:
+sekacorn@gmail.com
+
+Available licensing options:
+- Cross-licensing agreements
+- Royalty-bearing licenses
+- Royalty-free licenses for non-commercial use
+- Custom licensing arrangements
+
+
+================================================================================
+12. UPDATES TO PATENT STATUS
+================================================================================
+
+This patent notice will be updated as patent applications are filed and
+granted. Users should check for updates periodically.
+
+Current version: 1.0
+Last updated: 2025-11-09
+
+For the most current patent information, contact:
+sekacorn@gmail.com
+
+
+================================================================================
+13. LEGAL DISCLAIMER
+================================================================================
+
+This patent notice is provided for informational purposes only and does not
+constitute legal advice. It does not create any attorney-client relationship.
+
+For legal advice regarding patents, consult a qualified patent attorney.
+
+
+================================================================================
+14. JURISDICTION AND GOVERNING LAW
+================================================================================
+
+Patent matters shall be governed by:
+
+- U.S. Patent Law (35 U.S.C.) for U.S. patents
+- Applicable international patent treaties
+- Laws of the State of Maryland for licensing disputes
+
+Patent litigation shall be brought in federal courts with appropriate
+jurisdiction.
+
+
+================================================================================
+                         END OF PATENT NOTICE
+================================================================================
+
+For questions about patents or licensing, contact:
+sekacorn
+Email: sekacorn@gmail.com

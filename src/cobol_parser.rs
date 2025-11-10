@@ -1,8 +1,16 @@
+// Copyright (c) 2025 sekacorn
+// Contact: sekacorn@gmail.com
+// All rights reserved.
+//
+// This file is part of the Corn COBOL-to-Fortran Compiler.
+// Licensed under the Corn Dual License.
+// See LICENSE-COMMERCIAL.txt and LICENSE-OPEN-SOURCE.txt for details.
+
 //! This module handles the parsing of COBOL source code.
 //! Now supports:
-//! ✅ File Handling (OPEN, READ, WRITE)
-//! ✅ Advanced Loops (PERFORM VARYING, PERFORM UNTIL)
-//! ✅ COBOL Embedded SQL (EXEC SQL ... END-EXEC)
+//! - File Handling (OPEN, READ, WRITE)
+//! - Advanced Loops (PERFORM VARYING, PERFORM UNTIL)
+//! - COBOL Embedded SQL (EXEC SQL ... END-EXEC)
 
 use std::collections::HashMap;
 

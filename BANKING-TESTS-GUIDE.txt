@@ -1,0 +1,596 @@
+================================================================================
+              CORN COBOL-TO-FORTRAN COMPILER
+            BANKING TESTS - COMPREHENSIVE GUIDE
+                Copyright (c) 2025 sekacorn
+================================================================================
+
+This document explains all banking tests and why they're critical for
+regulatory compliance and operational safety.
+
+================================================================================
+                        TEST OVERVIEW
+================================================================================
+
+TOTAL TEST SUITES: 4 comprehensive test suites
+
+1. banking_precision_tests.cob        - 20 precision tests
+2. banking_sort_merge_tests.cob       - 10 batch processing tests
+3. banking_transaction_tests.cob      - 15 transaction integrity tests
+4. rust_banking_tests.rs              - 40+ Rust unit tests
+
+TOTAL TESTS: 85+ comprehensive banking tests
+
+PURPOSE:
+  - Ensure zero tolerance for financial calculation errors
+  - Validate ACID transaction properties
+  - Verify batch processing reliability
+  - Confirm regulatory compliance
+  - Prevent data corruption
+  - Protect against security vulnerabilities
+
+================================================================================
+                        TEST SUITE 1: PRECISION TESTS
+================================================================================
+
+FILE: tests/banking_precision_tests.cob
+TESTS: 20 comprehensive precision tests
+CRITICAL: YES - Zero tolerance for errors in banking
+
+WHY CRITICAL:
+  - Banks cannot tolerate ANY rounding errors
+  - Regulatory agencies audit calculation precision
+  - Customer trust depends on exact calculations
+  - Legal liability for precision errors
+  - Compound errors over millions of transactions
+
+TEST CATEGORIES:
+
+1. BASIC ARITHMETIC (Tests 1-4)
+   - Addition of large amounts
+   - Subtraction with precision preservation
+   - Multiplication with high precision
+   - Division with proper rounding
+
+   WHY: Foundation of all financial calculations
+
+2. INTEREST CALCULATIONS (Tests 5-6)
+   - Daily interest calculation
+   - Compound interest (monthly)
+
+   WHY: Core banking function, regulatory compliance required
+
+3. PERCENTAGE CALCULATIONS (Test 7)
+   - Fee calculations (2.5% on $50,000)
+
+   WHY: Fee transparency regulations
+
+4. CURRENCY CONVERSION (Test 8)
+   - USD to EUR conversion
+
+   WHY: International banking operations
+
+5. BANKER'S ROUNDING (Tests 9-12)
+   - Round to even (2.5 → 2)
+   - Round half to even (3.5 → 4)
+   - Round up (2.6 → 3)
+   - Round down (2.4 → 2)
+
+   WHY: Industry standard to minimize rounding bias
+
+6. REGULATORY COMPLIANCE (Test 13)
+   - Large transaction detection ($10K+)
+
+   WHY: Currency Transaction Report (CTR) filing requirement
+
+7. FINANCIAL PRODUCTS (Test 14)
+   - Monthly mortgage payment calculation
+
+   WHY: Consumer loan accuracy regulations
+
+8. ERROR DETECTION (Tests 15-18)
+   - Precision loss detection
+   - Overflow detection (ON SIZE ERROR)
+   - Division by zero protection
+   - Negative balance handling
+
+   WHY: Prevent data corruption and system crashes
+
+9. ACCUMULATED CALCULATIONS (Test 19)
+   - Interest accumulation over multiple periods
+
+   WHY: Long-term investment accuracy
+
+PASS CRITERIA:
+  ✓ All 20 tests must pass
+  ✓ Zero precision errors tolerated
+  ✓ All differences within 0.000001 tolerance
+
+FAILURE IMPACT:
+  ✗ CRITICAL: System not safe for banking
+  ✗ Cannot deploy to production
+  ✗ Regulatory violations likely
+  ✗ Customer funds at risk
+
+RUNNING TESTS:
+  ./run.sh compile tests/banking_precision_tests.cob -o precision_test.f90
+  gfortran precision_test.f90 -o precision_test
+  ./precision_test
+
+EXPECTED OUTPUT:
+  Total Tests: 20
+  Passed: 20
+  Failed: 0
+  *** ALL TESTS PASSED - READY FOR BANKING USE ***
+
+================================================================================
+                        TEST SUITE 2: SORT/MERGE TESTS
+================================================================================
+
+FILE: tests/banking_sort_merge_tests.cob
+TESTS: 10 batch processing tests
+CRITICAL: YES - End-of-day processing depends on this
+
+WHY CRITICAL:
+  - End-of-day processing handles millions of transactions
+  - Sort order errors corrupt financial reports
+  - Batch processing failures delay operations
+  - Audit trail depends on proper sequencing
+  - Regulatory reporting requires sorted data
+
+TEST CATEGORIES:
+
+1. SIMPLE SORTS (Tests 1-3)
+   - Sort by account number (ascending)
+   - Sort by date (descending - most recent first)
+   - Sort by amount (ascending - smallest first)
+
+   WHY: Basic requirement for all batch operations
+
+2. COMPLEX SORTS (Test 4)
+   - Multi-key sort (account, then date within account)
+
+   WHY: Customer statements require account+date sorting
+
+3. INPUT/OUTPUT PROCEDURES (Tests 5-6)
+   - INPUT PROCEDURE (filter large transactions)
+   - OUTPUT PROCEDURE (calculate account totals)
+
+   WHY: End-of-day processing requires data transformation
+
+4. MERGE OPERATIONS (Test 7)
+   - Merge two sorted transaction files
+
+   WHY: Consolidating data from multiple sources
+
+5. SPECIAL CASES (Tests 8-10)
+   - Large transaction amounts (billions)
+   - Negative amounts (overdrafts)
+   - Sort order validation (stable sort)
+
+   WHY: Handle edge cases without corruption
+
+PASS CRITERIA:
+  ✓ All 10 tests must pass
+  ✓ Sort order must be correct
+  ✓ No data loss during sorting
+  ✓ Stable sort preserves order
+
+FAILURE IMPACT:
+  ✗ CRITICAL: End-of-day processing will fail
+  ✗ Customer statements will be incorrect
+  ✗ Regulatory reports will be wrong
+  ✗ Audit trail corrupted
+
+RUNNING TESTS:
+  ./run.sh compile tests/banking_sort_merge_tests.cob -o sort_test.f90
+  gfortran sort_test.f90 -o sort_test
+  ./sort_test
+
+EXPECTED OUTPUT:
+  Total Tests: 10
+  Passed: 10
+  Failed: 0
+  *** ALL SORT/MERGE TESTS PASSED ***
+  Ready for end-of-day batch processing.
+
+================================================================================
+                        TEST SUITE 3: TRANSACTION TESTS
+================================================================================
+
+FILE: tests/banking_transaction_tests.cob
+TESTS: 15 transaction integrity tests
+CRITICAL: YES - ACID compliance is mandatory
+
+WHY CRITICAL:
+  - ACID properties prevent data corruption
+  - Atomicity ensures all-or-nothing transactions
+  - Consistency maintains data integrity
+  - Isolation prevents concurrent access issues
+  - Durability ensures audit trail completeness
+
+TEST CATEGORIES:
+
+1. BASIC TRANSACTIONS (Tests 1-2)
+   - Simple deposit
+   - Simple withdrawal
+
+   WHY: Foundation of all banking operations
+
+2. ACCOUNT TRANSFERS (Test 3)
+   - Account-to-account transfer
+   - Dual-account update
+
+   WHY: Most common banking operation
+
+3. BUSINESS RULES (Tests 4-7)
+   - Insufficient funds prevention
+   - Overdraft protection (within limit)
+   - Negative deposit rejection
+   - Frozen account protection
+   - Closed account protection
+
+   WHY: Prevent invalid transactions
+
+4. REGULATORY COMPLIANCE (Test 8)
+   - Large transaction reporting (>$10K)
+
+   WHY: Currency Transaction Report (CTR) requirement
+
+5. ACID PROPERTIES (Tests 9-10)
+   - Transaction atomicity (all or nothing)
+   - Rollback on error
+
+   WHY: Data integrity and regulatory compliance
+
+6. AUDIT TRAIL (Test 11)
+   - Audit trail completeness
+   - All transactions logged
+
+   WHY: SOX compliance, regulatory requirement
+
+7. CONCURRENCY (Test 12)
+   - Concurrent transaction handling
+   - Record locking
+
+   WHY: Multi-user environment safety
+
+8. DATA INTEGRITY (Tests 13-14)
+   - Balance consistency check
+   - Duplicate transaction prevention
+
+   WHY: Prevent data corruption
+
+PASS CRITERIA:
+  ✓ All 15 tests must pass
+  ✓ ACID properties enforced
+  ✓ Business rules working
+  ✓ Audit trail complete
+
+FAILURE IMPACT:
+  ✗ CRITICAL: Data corruption possible
+  ✗ Regulatory violations certain
+  ✗ Customer funds at risk
+  ✗ Audit failures
+
+RUNNING TESTS:
+  ./run.sh compile tests/banking_transaction_tests.cob -o trans_test.f90
+  gfortran trans_test.f90 -o trans_test
+  ./trans_test
+
+EXPECTED OUTPUT:
+  Total Tests: 15
+  Passed: 15
+  Failed: 0
+  *** ALL TRANSACTION TESTS PASSED ***
+  System ready for production transaction processing.
+
+================================================================================
+                        TEST SUITE 4: RUST UNIT TESTS
+================================================================================
+
+FILE: tests/rust_banking_tests.rs
+TESTS: 40+ Rust unit tests
+CRITICAL: YES - Validates compiler modules
+
+WHY CRITICAL:
+  - Tests compiler's banking modules
+  - Validates decimal arithmetic implementation
+  - Ensures SORT/MERGE translation correct
+  - Verifies error handling working
+  - Integration tests
+
+TEST CATEGORIES:
+
+1. DECIMAL ARITHMETIC TESTS (10 tests)
+   - Exact addition/subtraction/multiplication/division
+   - Banker's rounding
+   - Precision preservation
+   - Large number handling
+   - Overflow detection
+   - Division by zero protection
+
+2. SORT/MERGE TESTS (7 tests)
+   - Simple sorting
+   - Multi-key sorting
+   - Sort stability
+   - Large dataset performance
+   - Negative amount sorting
+
+3. ERROR HANDLING TESTS (4 tests)
+   - Error logging
+   - Audit trail entries
+   - Error categorization
+   - Multi-level logging
+
+4. TRANSACTION TESTS (9 tests)
+   - Deposits/withdrawals
+   - Insufficient funds
+   - Overdraft protection
+   - Large transaction detection
+   - Balance consistency
+   - Atomic transfers
+
+5. REGULATORY COMPLIANCE TESTS (5 tests)
+   - CTR threshold detection
+   - Suspicious activity patterns
+   - Audit trail immutability
+   - Data retention
+   - Access control
+
+6. INTEGRATION TESTS (3 tests)
+   - End-to-end transaction flow
+   - Batch processing workflow
+   - Error recovery
+
+RUNNING TESTS:
+  cargo test                              # Run all tests
+  cargo test decimal_arithmetic_tests     # Run specific module
+  cargo test -- --nocapture               # Show output
+
+EXPECTED OUTPUT:
+  running 40 tests
+  test decimal_arithmetic_tests::test_exact_addition ... ok
+  test decimal_arithmetic_tests::test_exact_subtraction ... ok
+  ...
+  test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured
+
+================================================================================
+                        RUNNING ALL TESTS
+================================================================================
+
+COMPLETE TEST SUITE:
+
+Step 1: Build compiler
+  ./build.sh
+
+Step 2: Run COBOL test suites
+  ./run.sh compile tests/banking_precision_tests.cob -o precision_test.f90
+  gfortran precision_test.f90 -o precision_test
+  ./precision_test
+
+  ./run.sh compile tests/banking_sort_merge_tests.cob -o sort_test.f90
+  gfortran sort_test.f90 -o sort_test
+  ./sort_test
+
+  ./run.sh compile tests/banking_transaction_tests.cob -o trans_test.f90
+  gfortran trans_test.f90 -o trans_test
+  ./trans_test
+
+Step 3: Run Rust unit tests
+  cargo test
+
+Step 4: Review results
+  All tests must pass for production readiness
+
+AUTOMATED TEST SCRIPT:
+  Create run-all-tests.sh:
+
+  #!/bin/bash
+  echo "Running all banking tests..."
+  ./build.sh
+  ./run.sh compile tests/banking_precision_tests.cob -o precision_test.f90
+  gfortran precision_test.f90 -o precision_test && ./precision_test
+  ./run.sh compile tests/banking_sort_merge_tests.cob -o sort_test.f90
+  gfortran sort_test.f90 -o sort_test && ./sort_test
+  ./run.sh compile tests/banking_transaction_tests.cob -o trans_test.f90
+  gfortran trans_test.f90 -o trans_test && ./trans_test
+  cargo test
+  echo "All tests complete!"
+
+================================================================================
+                        WHY THESE TESTS MATTER
+================================================================================
+
+REGULATORY COMPLIANCE:
+  ✓ SOX (Sarbanes-Oxley) - Audit trail and accuracy
+  ✓ PCI-DSS - Transaction security
+  ✓ Bank Secrecy Act - Large transaction reporting
+  ✓ FDIC - Data integrity and backup
+  ✓ FFIEC - IT controls and testing
+
+BUSINESS IMPACT:
+  ✓ Customer trust - Accurate balances
+  ✓ Operational efficiency - Fast batch processing
+  ✓ Risk reduction - Error detection
+  ✓ Cost savings - Automated validation
+  ✓ Competitive advantage - Reliable systems
+
+LEGAL PROTECTION:
+  ✓ Demonstrable testing - Legal defense
+  ✓ Audit compliance - Pass examinations
+  ✓ Error prevention - Avoid lawsuits
+  ✓ Due diligence - Professional standards
+
+TECHNICAL EXCELLENCE:
+  ✓ Production readiness - Comprehensive coverage
+  ✓ Maintainability - Well-tested code
+  ✓ Performance - Validated efficiency
+  ✓ Quality assurance - Continuous validation
+
+================================================================================
+                        INTERPRETING TEST RESULTS
+================================================================================
+
+ALL TESTS PASS:
+  ✓ System is production-ready
+  ✓ Deploy with confidence
+  ✓ Regulatory compliance achieved
+  ✓ Customer funds protected
+
+SOME TESTS FAIL:
+  ✗ DO NOT DEPLOY TO PRODUCTION
+  ✗ Identify failing tests
+  ✗ Fix root causes
+  ✗ Rerun all tests
+  ✗ Document fixes
+
+PRECISION TESTS FAIL:
+  ✗ CRITICAL: Stop all development
+  ✗ Banking use is unsafe
+  ✗ Fix immediately
+  ✗ Review decimal arithmetic module
+
+SORT/MERGE TESTS FAIL:
+  ✗ CRITICAL: Batch processing unsafe
+  ✗ End-of-day processing will fail
+  ✗ Fix before production
+
+TRANSACTION TESTS FAIL:
+  ✗ CRITICAL: Data corruption possible
+  ✗ Customer funds at risk
+  ✗ Fix immediately
+
+RUST TESTS FAIL:
+  ✗ Compiler modules have bugs
+  ✗ Fix before running COBOL tests
+  ✗ May affect generated Fortran code
+
+================================================================================
+                        TEST MAINTENANCE
+================================================================================
+
+ADDING NEW TESTS:
+  1. Identify banking requirement
+  2. Write test case
+  3. Run test (should fail initially)
+  4. Implement feature
+  5. Run test (should pass)
+  6. Document test in this guide
+
+UPDATING TESTS:
+  1. Review test regularly
+  2. Update for new regulations
+  3. Add edge cases discovered
+  4. Maintain test coverage
+
+TEST COVERAGE GOALS:
+  - Precision tests: 100% of arithmetic operations
+  - Sort tests: 100% of sort patterns
+  - Transaction tests: 100% of business rules
+  - Rust tests: 80%+ code coverage
+
+REGRESSION TESTING:
+  - Run all tests before every release
+  - Run all tests after any bug fix
+  - Run all tests monthly minimum
+  - Automated in CI/CD pipeline
+
+================================================================================
+                        CERTIFICATION FOR PRODUCTION
+================================================================================
+
+BEFORE PRODUCTION DEPLOYMENT:
+
+1. Run all tests
+   □ Precision tests: 20/20 passed
+   □ Sort tests: 10/10 passed
+   □ Transaction tests: 15/15 passed
+   □ Rust tests: 40+/40+ passed
+
+2. Document results
+   □ Test execution date
+   □ Tester name
+   □ Pass/fail status
+   □ Any exceptions
+
+3. Review by stakeholders
+   □ IT manager approval
+   □ Compliance officer approval
+   □ Risk management approval
+   □ Legal approval
+
+4. Archive test results
+   □ Store for 7 years (SOX requirement)
+   □ Include in audit documentation
+   □ Make available for examination
+
+CERTIFICATION STATEMENT:
+
+"I certify that all banking tests have been executed successfully
+and the Corn COBOL-to-Fortran Compiler is ready for production use
+in banking operations."
+
+Signature: _______________________
+Name: ___________________________
+Title: ___________________________
+Date: ___________________________
+
+================================================================================
+                        CONTACT AND SUPPORT
+================================================================================
+
+For test failures or questions:
+  Email: sekacorn@gmail.com
+  Subject: Banking Tests - [describe issue]
+
+For new test requirements:
+  Email: sekacorn@gmail.com
+  Subject: New Test Request - [requirement]
+
+For commercial support:
+  Email: sekacorn@gmail.com
+  Subject: Commercial Support - Testing
+
+Response time: 2 business days
+
+================================================================================
+                        SUMMARY
+================================================================================
+
+TOTAL TESTS: 85+ comprehensive banking tests
+
+TEST SUITES:
+  1. Precision Tests (20 tests)
+  2. Sort/Merge Tests (10 tests)
+  3. Transaction Tests (15 tests)
+  4. Rust Unit Tests (40+ tests)
+
+CRITICAL FOR:
+  ✓ Regulatory compliance
+  ✓ Customer protection
+  ✓ Data integrity
+  ✓ Operational reliability
+  ✓ Legal protection
+
+PASS CRITERIA:
+  ALL TESTS MUST PASS FOR PRODUCTION USE
+
+RUNNING TESTS:
+  ./build.sh
+  [Run each COBOL test suite]
+  cargo test
+  [Review results]
+
+STATUS: All tests documented and ready to execute
+
+For production certification, all tests must pass with zero failures.
+
+================================================================================
+                        END OF BANKING TESTS GUIDE
+================================================================================
+
+Copyright (c) 2025 sekacorn | sekacorn@gmail.com
+Banking Enterprise Edition v2.0
+
+These tests protect customer funds and ensure regulatory compliance.
+Run them before every production deployment.

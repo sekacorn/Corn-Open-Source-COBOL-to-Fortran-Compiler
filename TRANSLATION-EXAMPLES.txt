@@ -1,0 +1,626 @@
+================================================================================
+            COBOL to Fortran Translation Examples
+================================================================================
+
+This document shows side-by-side examples of COBOL code and their Fortran
+translations to help developers understand the conversion process.
+
+
+================================================================================
+EXAMPLE 1: Data Division - Simple Variables
+================================================================================
+
+COBOL:
+------
+DATA DIVISION.
+WORKING-STORAGE SECTION.
+01 WS-EMPLOYEE-ID      PIC 9(6).
+01 WS-EMPLOYEE-NAME    PIC X(30).
+01 WS-SALARY           PIC 9(7)V99.
+01 WS-DEPT-CODE        PIC X(10).
+
+Fortran:
+--------
+! Data Division - Variable Declarations
+! Working Storage Section
+INTEGER :: WS_EMPLOYEE_ID
+CHARACTER(LEN=30) :: WS_EMPLOYEE_NAME
+REAL :: WS_SALARY
+CHARACTER(LEN=10) :: WS_DEPT_CODE
+
+
+================================================================================
+EXAMPLE 2: Data Division - Group Items (Nested Structures)
+================================================================================
+
+COBOL:
+------
+01 EMPLOYEE-RECORD.
+   05 EMP-ID           PIC 9(6).
+   05 EMP-NAME         PIC X(30).
+   05 EMP-ADDRESS.
+      10 STREET        PIC X(40).
+      10 CITY          PIC X(20).
+      10 STATE         PIC X(2).
+      10 ZIP           PIC 9(5).
+   05 EMP-SALARY       PIC 9(7)V99.
+
+Fortran:
+--------
+TYPE EMPLOYEE_RECORD_TYPE
+    INTEGER :: EMP_ID
+    CHARACTER(LEN=30) :: EMP_NAME
+    CHARACTER(LEN=40) :: STREET
+    CHARACTER(LEN=20) :: CITY
+    CHARACTER(LEN=2) :: STATE
+    INTEGER :: ZIP
+    REAL :: EMP_SALARY
+END TYPE EMPLOYEE_RECORD_TYPE
+
+TYPE(EMPLOYEE_RECORD_TYPE) :: EMPLOYEE_RECORD
+
+
+================================================================================
+EXAMPLE 3: Data Division - Arrays (OCCURS Clause)
+================================================================================
+
+COBOL:
+------
+01 EMPLOYEE-TABLE.
+   05 EMP-ENTRY OCCURS 100 TIMES.
+      10 EMP-ID        PIC 9(6).
+      10 EMP-NAME      PIC X(30).
+      10 EMP-SALARY    PIC 9(7)V99.
+
+Fortran:
+--------
+TYPE EMP_ENTRY_TYPE
+    INTEGER :: EMP_ID
+    CHARACTER(LEN=30) :: EMP_NAME
+    REAL :: EMP_SALARY
+END TYPE EMP_ENTRY_TYPE
+
+TYPE(EMP_ENTRY_TYPE), DIMENSION(100) :: EMP_ENTRY
+
+
+================================================================================
+EXAMPLE 4: Data Division - VALUE Clause (Initialization)
+================================================================================
+
+COBOL:
+------
+01 WS-CONSTANTS.
+   05 WS-TAX-RATE      PIC V999 VALUE 0.25.
+   05 WS-MAX-EMPLOYEES PIC 9(5) VALUE 1000.
+   05 WS-COMPANY-NAME  PIC X(40) VALUE 'ACME Corporation'.
+
+Fortran:
+--------
+REAL :: WS_TAX_RATE
+INTEGER :: WS_MAX_EMPLOYEES
+CHARACTER(LEN=40) :: WS_COMPANY_NAME
+
+DATA WS_TAX_RATE / 0.25 /
+DATA WS_MAX_EMPLOYEES / 1000 /
+DATA WS_COMPANY_NAME / 'ACME Corporation' /
+
+
+================================================================================
+EXAMPLE 5: Condition Names (88-level)
+================================================================================
+
+COBOL:
+------
+01 WS-STATUS-CODE      PIC X.
+   88 STATUS-ACTIVE    VALUE 'A'.
+   88 STATUS-INACTIVE  VALUE 'I'.
+   88 STATUS-PENDING   VALUE 'P'.
+
+IF STATUS-ACTIVE
+   PERFORM PROCESS-ACTIVE-EMPLOYEE
+END-IF
+
+Fortran:
+--------
+CHARACTER(LEN=1) :: WS_STATUS_CODE
+
+LOGICAL FUNCTION STATUS_ACTIVE()
+    STATUS_ACTIVE = (WS_STATUS_CODE == 'A')
+END FUNCTION
+
+! Usage:
+IF (STATUS_ACTIVE()) THEN
+    CALL PROCESS_ACTIVE_EMPLOYEE
+END IF
+
+
+================================================================================
+EXAMPLE 6: Arithmetic - ADD Statement
+================================================================================
+
+COBOL:
+------
+ADD 10 TO WS-COUNTER
+ADD WS-SALARY WS-BONUS GIVING WS-TOTAL-PAY
+ADD 100 200 300 GIVING WS-SUM
+
+Fortran:
+--------
+WS_COUNTER = WS_COUNTER + 10
+WS_TOTAL_PAY = WS_SALARY + WS_BONUS
+WS_SUM = 100 + 200 + 300
+
+
+================================================================================
+EXAMPLE 7: Arithmetic - SUBTRACT Statement
+================================================================================
+
+COBOL:
+------
+SUBTRACT 5 FROM WS-COUNTER
+SUBTRACT WS-TAX FROM WS-SALARY GIVING WS-NET-PAY
+
+Fortran:
+--------
+WS_COUNTER = WS_COUNTER - 5
+WS_NET_PAY = WS_SALARY - WS_TAX
+
+
+================================================================================
+EXAMPLE 8: Arithmetic - MULTIPLY and DIVIDE
+================================================================================
+
+COBOL:
+------
+MULTIPLY WS-SALARY BY 1.05 GIVING WS-NEW-SALARY
+DIVIDE WS-ANNUAL-SALARY BY 12 GIVING WS-MONTHLY-PAY
+DIVIDE 1000 BY 3 GIVING WS-QUOTIENT REMAINDER WS-REMAINDER
+
+Fortran:
+--------
+WS_NEW_SALARY = WS_SALARY * 1.05
+WS_MONTHLY_PAY = WS_ANNUAL_SALARY / 12
+WS_QUOTIENT = 1000 / 3
+WS_REMAINDER = MOD(1000, 3)
+
+
+================================================================================
+EXAMPLE 9: Arithmetic - COMPUTE Statement
+================================================================================
+
+COBOL:
+------
+COMPUTE WS-NET-PAY = (WS-SALARY + WS-BONUS) * (1 - WS-TAX-RATE)
+COMPUTE WS-COMPOUND = WS-PRINCIPAL * (1.05 ** WS-YEARS)
+
+Fortran:
+--------
+WS_NET_PAY = (WS_SALARY + WS_BONUS) * (1.0 - WS_TAX_RATE)
+WS_COMPOUND = WS_PRINCIPAL * (1.05 ** WS_YEARS)
+
+
+================================================================================
+EXAMPLE 10: IF-THEN-ELSE Statement
+================================================================================
+
+COBOL:
+------
+IF WS-SALARY > 50000
+   THEN
+       COMPUTE WS-BONUS = WS-SALARY * 0.10
+       ADD 1 TO WS-HIGH-EARNER-COUNT
+   ELSE
+       COMPUTE WS-BONUS = WS-SALARY * 0.05
+       ADD 1 TO WS-REGULAR-COUNT
+END-IF
+
+Fortran:
+--------
+IF (WS_SALARY > 50000.0) THEN
+    WS_BONUS = WS_SALARY * 0.10
+    WS_HIGH_EARNER_COUNT = WS_HIGH_EARNER_COUNT + 1
+ELSE
+    WS_BONUS = WS_SALARY * 0.05
+    WS_REGULAR_COUNT = WS_REGULAR_COUNT + 1
+END IF
+
+
+================================================================================
+EXAMPLE 11: Nested IF Statements
+================================================================================
+
+COBOL:
+------
+IF WS-SALARY > 100000
+   IF WS-YEARS-SERVICE > 10
+      COMPUTE WS-BONUS = WS-SALARY * 0.20
+   ELSE
+      COMPUTE WS-BONUS = WS-SALARY * 0.15
+   END-IF
+ELSE
+   COMPUTE WS-BONUS = WS-SALARY * 0.05
+END-IF
+
+Fortran:
+--------
+IF (WS_SALARY > 100000.0) THEN
+    IF (WS_YEARS_SERVICE > 10) THEN
+        WS_BONUS = WS_SALARY * 0.20
+    ELSE
+        WS_BONUS = WS_SALARY * 0.15
+    END IF
+ELSE
+    WS_BONUS = WS_SALARY * 0.05
+END IF
+
+
+================================================================================
+EXAMPLE 12: Complex Conditions (AND, OR, NOT)
+================================================================================
+
+COBOL:
+------
+IF (WS-SALARY > 50000 AND WS-DEPT = 'SALES')
+   OR (WS-YEARS-SERVICE > 20)
+   PERFORM SPECIAL-PROCESSING
+END-IF
+
+IF NOT (WS-STATUS = 'I')
+   PERFORM ACTIVE-PROCESSING
+END-IF
+
+Fortran:
+--------
+IF ((WS_SALARY > 50000.0 .AND. WS_DEPT == 'SALES') &
+    .OR. (WS_YEARS_SERVICE > 20)) THEN
+    CALL SPECIAL_PROCESSING
+END IF
+
+IF (.NOT. (WS_STATUS == 'I')) THEN
+    CALL ACTIVE_PROCESSING
+END IF
+
+
+================================================================================
+EXAMPLE 13: EVALUATE Statement (CASE)
+================================================================================
+
+COBOL:
+------
+EVALUATE WS-DEPT-CODE
+   WHEN 'SALES'
+      PERFORM SALES-PROCESSING
+   WHEN 'IT'
+      PERFORM IT-PROCESSING
+   WHEN 'HR'
+      PERFORM HR-PROCESSING
+   WHEN OTHER
+      PERFORM DEFAULT-PROCESSING
+END-EVALUATE
+
+Fortran:
+--------
+SELECT CASE (WS_DEPT_CODE)
+CASE ('SALES')
+    CALL SALES_PROCESSING
+CASE ('IT')
+    CALL IT_PROCESSING
+CASE ('HR')
+    CALL HR_PROCESSING
+CASE DEFAULT
+    CALL DEFAULT_PROCESSING
+END SELECT
+
+
+================================================================================
+EXAMPLE 14: PERFORM Statement (Simple)
+================================================================================
+
+COBOL:
+------
+PERFORM CALCULATE-BONUS
+PERFORM VALIDATE-DATA
+PERFORM WRITE-REPORT
+
+Fortran:
+--------
+CALL CALCULATE_BONUS
+CALL VALIDATE_DATA
+CALL WRITE_REPORT
+
+
+================================================================================
+EXAMPLE 15: PERFORM UNTIL Loop
+================================================================================
+
+COBOL:
+------
+PERFORM READ-EMPLOYEE
+PERFORM PROCESS-EMPLOYEE
+   UNTIL END-OF-FILE
+
+Fortran:
+--------
+CALL READ_EMPLOYEE
+DO WHILE (.NOT. (END_OF_FILE))
+    CALL PROCESS_EMPLOYEE
+END DO
+
+
+================================================================================
+EXAMPLE 16: PERFORM VARYING Loop
+================================================================================
+
+COBOL:
+------
+PERFORM VARYING WS-INDEX FROM 1 BY 1
+   UNTIL WS-INDEX > 100
+      DISPLAY 'Processing record: ' WS-INDEX
+      PERFORM PROCESS-RECORD
+END-PERFORM
+
+Fortran:
+--------
+DO WS_INDEX = 1, 100, 1
+    WRITE(*,*) 'Processing record: ', WS_INDEX
+    CALL PROCESS_RECORD
+END DO
+
+
+================================================================================
+EXAMPLE 17: File Operations - Sequential File Processing
+================================================================================
+
+COBOL:
+------
+OPEN INPUT EMPLOYEE-FILE
+READ EMPLOYEE-FILE
+   AT END
+      MOVE 'Y' TO WS-EOF-FLAG
+END-READ
+
+PERFORM PROCESS-EMPLOYEE
+   UNTIL END-OF-FILE
+
+CLOSE EMPLOYEE-FILE
+
+Fortran:
+--------
+INTEGER :: EMPLOYEE_FILE_UNIT = 10
+INTEGER :: IO_STAT
+
+OPEN(UNIT=EMPLOYEE_FILE_UNIT, FILE='EMPLOYEES.DAT', &
+     STATUS='OLD', ACTION='READ')
+
+READ(EMPLOYEE_FILE_UNIT, FMT=*, IOSTAT=IO_STAT) EMPLOYEE_RECORD
+IF (IO_STAT /= 0) THEN
+    WS_EOF_FLAG = 'Y'
+END IF
+
+DO WHILE (.NOT. (END_OF_FILE))
+    CALL PROCESS_EMPLOYEE
+END DO
+
+CLOSE(EMPLOYEE_FILE_UNIT)
+
+
+================================================================================
+EXAMPLE 18: File Operations - WRITE
+================================================================================
+
+COBOL:
+------
+OPEN OUTPUT REPORT-FILE
+WRITE REPORT-RECORD FROM WS-REPORT-LINE
+CLOSE REPORT-FILE
+
+Fortran:
+--------
+INTEGER :: REPORT_FILE_UNIT = 11
+
+OPEN(UNIT=REPORT_FILE_UNIT, FILE='REPORT.DAT', &
+     STATUS='REPLACE', ACTION='WRITE')
+
+WRITE(REPORT_FILE_UNIT, FMT=*) WS_REPORT_LINE
+
+CLOSE(REPORT_FILE_UNIT)
+
+
+================================================================================
+EXAMPLE 19: STRING Statement
+================================================================================
+
+COBOL:
+------
+STRING WS-FIRST-NAME DELIMITED BY SIZE
+       ' ' DELIMITED BY SIZE
+       WS-LAST-NAME DELIMITED BY SIZE
+       INTO WS-FULL-NAME
+END-STRING
+
+Fortran:
+--------
+! Fortran concatenation
+WS_FULL_NAME = TRIM(WS_FIRST_NAME) // ' ' // TRIM(WS_LAST_NAME)
+
+
+================================================================================
+EXAMPLE 20: MOVE Statement
+================================================================================
+
+COBOL:
+------
+MOVE WS-EMPLOYEE-ID TO REPORT-EMP-ID
+MOVE ZEROS TO WS-COUNTER
+MOVE SPACES TO WS-NAME
+MOVE 'ACTIVE' TO WS-STATUS
+
+Fortran:
+--------
+REPORT_EMP_ID = WS_EMPLOYEE_ID
+WS_COUNTER = 0
+WS_NAME = ' '
+WS_STATUS = 'ACTIVE'
+
+
+================================================================================
+EXAMPLE 21: INITIALIZE Statement
+================================================================================
+
+COBOL:
+------
+INITIALIZE EMPLOYEE-RECORD
+INITIALIZE WS-COUNTERS WS-TOTALS
+
+Fortran:
+--------
+! For numeric fields
+EMPLOYEE_RECORD%EMP_ID = 0
+EMPLOYEE_RECORD%EMP_SALARY = 0.0
+
+! For character fields
+EMPLOYEE_RECORD%EMP_NAME = ' '
+
+
+================================================================================
+EXAMPLE 22: CALL Statement with Parameters
+================================================================================
+
+COBOL:
+------
+CALL 'CALCULATE-TAX' USING BY REFERENCE WS-SALARY
+                            BY CONTENT WS-TAX-RATE
+                            BY VALUE WS-YEAR
+
+Fortran:
+--------
+CALL CALCULATE_TAX(WS_SALARY, WS_TAX_RATE, WS_YEAR)
+
+! Note: Fortran passes by reference by default
+! Use VALUE attribute in subroutine declaration for by-value:
+! SUBROUTINE CALCULATE_TAX(SALARY, TAX_RATE, YEAR)
+!     REAL, INTENT(INOUT) :: SALARY
+!     REAL, INTENT(IN) :: TAX_RATE
+!     INTEGER, VALUE :: YEAR
+
+
+================================================================================
+EXAMPLE 23: ACCEPT and DISPLAY
+================================================================================
+
+COBOL:
+------
+DISPLAY 'Enter Employee ID: '
+ACCEPT WS-EMPLOYEE-ID
+
+DISPLAY 'Employee: ' WS-EMPLOYEE-NAME
+DISPLAY 'Salary: ' WS-SALARY
+
+Fortran:
+--------
+WRITE(*,*) 'Enter Employee ID: '
+READ(*,*) WS_EMPLOYEE_ID
+
+WRITE(*,*) 'Employee: ', WS_EMPLOYEE_NAME
+WRITE(*,*) 'Salary: ', WS_SALARY
+
+
+================================================================================
+EXAMPLE 24: Complete Program Example
+================================================================================
+
+COBOL:
+------
+IDENTIFICATION DIVISION.
+PROGRAM-ID. SIMPLE-CALC.
+
+DATA DIVISION.
+WORKING-STORAGE SECTION.
+01 WS-NUM1             PIC 9(5).
+01 WS-NUM2             PIC 9(5).
+01 WS-RESULT           PIC 9(6).
+
+PROCEDURE DIVISION.
+MAIN-PARA.
+    DISPLAY 'Enter first number: '
+    ACCEPT WS-NUM1
+    DISPLAY 'Enter second number: '
+    ACCEPT WS-NUM2
+
+    ADD WS-NUM1 TO WS-NUM2 GIVING WS-RESULT
+    DISPLAY 'Sum: ' WS-RESULT
+
+    STOP RUN.
+
+Fortran:
+--------
+PROGRAM SIMPLE_CALC
+    IMPLICIT NONE
+
+    ! Data Division - Variable Declarations
+    ! Working Storage Section
+    INTEGER :: WS_NUM1
+    INTEGER :: WS_NUM2
+    INTEGER :: WS_RESULT
+
+    ! Main program execution
+    CALL MAIN
+    STOP
+END PROGRAM SIMPLE_CALC
+
+SUBROUTINE MAIN_PARA
+    IMPLICIT NONE
+
+    WRITE(*,*) 'Enter first number: '
+    READ(*,*) WS_NUM1
+    WRITE(*,*) 'Enter second number: '
+    READ(*,*) WS_NUM2
+
+    WS_RESULT = WS_NUM1 + WS_NUM2
+    WRITE(*,*) 'Sum: ', WS_RESULT
+
+    STOP
+END SUBROUTINE MAIN_PARA
+
+
+================================================================================
+TYPE MAPPING REFERENCE
+================================================================================
+
+COBOL PIC                    Fortran Type
+-----------                  -------------
+PIC 9(n)                  -> INTEGER
+PIC 9(n) where n > 9      -> INTEGER(KIND=8)
+PIC S9(n)                 -> INTEGER (signed by default)
+PIC 9(n)V9(m)             -> REAL or REAL(KIND=8)
+PIC X(n)                  -> CHARACTER(LEN=n)
+PIC A(n)                  -> CHARACTER(LEN=n)
+PIC V9(n)                 -> REAL (value < 1.0)
+PIC S9(n)V9(m)            -> REAL (signed decimal)
+
+USAGE COMP                -> INTEGER (binary)
+USAGE COMP-3              -> INTEGER (needs conversion logic)
+USAGE DISPLAY             -> Default character representation
+
+
+================================================================================
+OPERATOR MAPPING REFERENCE
+================================================================================
+
+COBOL Operator           Fortran Operator
+--------------           ----------------
+=                     -> ==
+>                     -> >
+<                     -> <
+>=                    -> >=
+<=                    -> <=
+NOT =, <>             -> /=
+AND                   -> .AND.
+OR                    -> .OR.
+NOT                   -> .NOT.
+**                    -> ** (exponentiation, same)
+
+
+================================================================================
+END OF TRANSLATION EXAMPLES
+================================================================================

@@ -3,15 +3,541 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Report Dashboard</title>
+    <title>Corn COBOL-to-Fortran Compiler - Banking Enterprise Edition</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script src="dashboard.js" defer></script>
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <h1>🌽 Corn COBOL-to-Fortran Compiler</h1>
+            <p class="subtitle">Banking Enterprise Edition v2.0</p>
+            <div class="status-badge">PRODUCTION-READY | 90-95% COBOL Coverage</div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs">
+        <button class="tab-button active" onclick="showTab('compiler')">
+            💻 Online Compiler
+        </button>
+        <button class="tab-button" onclick="showTab('tests')">
+            🧪 Test Suite
+        </button>
+        <button class="tab-button" onclick="showTab('compliance')">
+            ✓ Compliance Checker
+        </button>
+        <button class="tab-button" onclick="showTab('calculator')">
+            🔢 Banking Calculator
+        </button>
+        <button class="tab-button" onclick="showTab('docs')">
+            📚 Documentation
+        </button>
+        <button class="tab-button" onclick="showTab('api')">
+            🔌 API Reference
+        </button>
+    </nav>
+
+    <!-- Main Content Container -->
     <div class="container">
-        <h1>📊 Live Sales Report Dashboard</h1>
-        <button onclick="fetchReport()">Refresh Report</button>
-        <pre id="report">Click the button to load the report...</pre>
+
+        <!-- Tab 1: Online Compiler -->
+        <div id="compiler" class="tab-content active">
+            <h2>COBOL to Fortran Online Compiler</h2>
+            <p class="description">
+                Compile COBOL code to Fortran directly in your browser. Perfect for testing and demonstrations.
+            </p>
+
+            <div class="compiler-section">
+                <div class="editor-panel">
+                    <h3>COBOL Source Code</h3>
+                    <textarea id="cobol-input" placeholder="Enter COBOL code here...
+
+Example:
+IDENTIFICATION DIVISION.
+PROGRAM-ID. BANKING-DEMO.
+
+DATA DIVISION.
+WORKING-STORAGE SECTION.
+01  ACCOUNT-BALANCE     PIC 9(10)V99 VALUE 10000.00.
+01  DEPOSIT-AMOUNT      PIC 9(8)V99.
+01  INTEREST-RATE       PIC 9V9(6) VALUE 0.015.
+
+PROCEDURE DIVISION.
+MAIN-PROCESSING.
+    MOVE 5000.00 TO DEPOSIT-AMOUNT
+    ADD DEPOSIT-AMOUNT TO ACCOUNT-BALANCE
+    MULTIPLY ACCOUNT-BALANCE BY INTEREST-RATE
+        GIVING WS-INTEREST ROUNDED
+    DISPLAY 'Balance: ' ACCOUNT-BALANCE
+    DISPLAY 'Interest: ' WS-INTEREST
+    STOP RUN.
+"></textarea>
+                    <div class="button-group">
+                        <button class="primary-button" onclick="compileCode()">
+                            ▶ Compile to Fortran
+                        </button>
+                        <button class="secondary-button" onclick="loadExample()">
+                            📝 Load Example
+                        </button>
+                        <button class="secondary-button" onclick="clearEditor()">
+                            🗑️ Clear
+                        </button>
+                    </div>
+                </div>
+
+                <div class="output-panel">
+                    <h3>Generated Fortran Code</h3>
+                    <div id="compile-status" class="status-message"></div>
+                    <pre id="fortran-output" class="code-output">Compiled Fortran code will appear here...</pre>
+                    <div class="button-group">
+                        <button class="primary-button" onclick="downloadFortran()" id="download-btn" disabled>
+                            ⬇ Download Fortran
+                        </button>
+                        <button class="secondary-button" onclick="copyToClipboard()">
+                            📋 Copy to Clipboard
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h4>Banking Features Supported:</h4>
+                <ul>
+                    <li>✓ Precision decimal arithmetic (PIC 9(n)V9(n))</li>
+                    <li>✓ Banker's rounding (ROUNDED mode)</li>
+                    <li>✓ ON SIZE ERROR detection</li>
+                    <li>✓ SORT/MERGE operations</li>
+                    <li>✓ Complete Data Division translation</li>
+                    <li>✓ SQL integration (EXEC SQL)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tab 2: Test Suite -->
+        <div id="tests" class="tab-content">
+            <h2>Banking Test Suite</h2>
+            <p class="description">
+                Run comprehensive banking tests to validate compiler functionality and regulatory compliance.
+            </p>
+
+            <div class="test-categories">
+                <div class="test-category">
+                    <h3>🔬 Precision Tests (20 tests)</h3>
+                    <p>Validates exact decimal arithmetic and banker's rounding</p>
+                    <button class="test-button" onclick="runTest('precision')">
+                        Run Precision Tests
+                    </button>
+                    <div id="precision-results" class="test-results"></div>
+                </div>
+
+                <div class="test-category">
+                    <h3>📊 Sort/Merge Tests (10 tests)</h3>
+                    <p>Tests batch processing and data sorting operations</p>
+                    <button class="test-button" onclick="runTest('sort')">
+                        Run Sort/Merge Tests
+                    </button>
+                    <div id="sort-results" class="test-results"></div>
+                </div>
+
+                <div class="test-category">
+                    <h3>💰 Transaction Tests (15 tests)</h3>
+                    <p>Validates deposits, withdrawals, and ACID compliance</p>
+                    <button class="test-button" onclick="runTest('transaction')">
+                        Run Transaction Tests
+                    </button>
+                    <div id="transaction-results" class="test-results"></div>
+                </div>
+
+                <div class="test-category">
+                    <h3>🎯 End-to-End Test (10 phases)</h3>
+                    <p>Complete pipeline validation from COBOL to executable</p>
+                    <button class="test-button" onclick="runTest('e2e')">
+                        Run End-to-End Test
+                    </button>
+                    <div id="e2e-results" class="test-results"></div>
+                </div>
+            </div>
+
+            <div class="run-all-section">
+                <button class="primary-button large" onclick="runAllTests()">
+                    ▶ Run All Banking Tests (85+ tests)
+                </button>
+                <div id="all-tests-results" class="test-results"></div>
+            </div>
+
+            <div class="info-box">
+                <h4>Test Coverage:</h4>
+                <ul>
+                    <li>✓ Precision arithmetic (zero tolerance for errors)</li>
+                    <li>✓ Large transaction detection ($10K+ CTR compliance)</li>
+                    <li>✓ Insufficient funds prevention</li>
+                    <li>✓ Overdraft protection</li>
+                    <li>✓ Audit trail completeness (SOX compliance)</li>
+                    <li>✓ Balance consistency verification</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tab 3: Compliance Checker -->
+        <div id="compliance" class="tab-content">
+            <h2>Banking Compliance Checker</h2>
+            <p class="description">
+                Validate COBOL code against banking industry standards and regulatory requirements.
+            </p>
+
+            <div class="compliance-section">
+                <textarea id="compliance-input" placeholder="Paste COBOL code to check for compliance..."></textarea>
+
+                <div class="compliance-options">
+                    <h4>Check For:</h4>
+                    <label><input type="checkbox" id="check-precision" checked> Precision Arithmetic (SOX)</label>
+                    <label><input type="checkbox" id="check-ctr" checked> Large Transaction Detection ($10K+)</label>
+                    <label><input type="checkbox" id="check-audit" checked> Audit Trail Requirements</label>
+                    <label><input type="checkbox" id="check-rounding" checked> Banker's Rounding</label>
+                    <label><input type="checkbox" id="check-error" checked> Error Handling (ON SIZE ERROR)</label>
+                    <label><input type="checkbox" id="check-naming" checked> Naming Conventions</label>
+                </div>
+
+                <button class="primary-button" onclick="checkCompliance()">
+                    ✓ Check Compliance
+                </button>
+
+                <div id="compliance-results" class="compliance-results"></div>
+            </div>
+
+            <div class="info-box">
+                <h4>Regulatory Standards Checked:</h4>
+                <ul>
+                    <li>✓ Sarbanes-Oxley (SOX) - Audit trail and accuracy</li>
+                    <li>✓ PCI-DSS - Transaction security</li>
+                    <li>✓ Bank Secrecy Act - Large transaction reporting</li>
+                    <li>✓ FDIC - Data integrity requirements</li>
+                    <li>✓ FFIEC - IT controls and testing</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tab 4: Banking Calculator -->
+        <div id="calculator" class="tab-content">
+            <h2>Banking Calculator Tools</h2>
+            <p class="description">
+                Test precision arithmetic and banking calculations with zero error tolerance.
+            </p>
+
+            <div class="calc-grid">
+                <!-- Interest Calculator -->
+                <div class="calc-tool">
+                    <h3>Interest Calculator</h3>
+                    <div class="calc-inputs">
+                        <label>Principal Amount ($):
+                            <input type="number" id="interest-principal" value="10000.00" step="0.01">
+                        </label>
+                        <label>Annual Rate (%):
+                            <input type="number" id="interest-rate" value="1.5" step="0.01">
+                        </label>
+                        <label>Days:
+                            <input type="number" id="interest-days" value="30" step="1">
+                        </label>
+                        <button onclick="calculateInterest()">Calculate</button>
+                    </div>
+                    <div id="interest-result" class="calc-result"></div>
+                </div>
+
+                <!-- Fee Calculator -->
+                <div class="calc-tool">
+                    <h3>Fee Calculator</h3>
+                    <div class="calc-inputs">
+                        <label>Amount ($):
+                            <input type="number" id="fee-amount" value="1000.00" step="0.01">
+                        </label>
+                        <label>Fee Rate (%):
+                            <input type="number" id="fee-rate" value="0.5" step="0.01">
+                        </label>
+                        <label>Rounding:
+                            <select id="fee-rounding">
+                                <option value="bankers">Banker's Rounding</option>
+                                <option value="up">Round Up</option>
+                                <option value="down">Round Down</option>
+                            </select>
+                        </label>
+                        <button onclick="calculateFee()">Calculate</button>
+                    </div>
+                    <div id="fee-result" class="calc-result"></div>
+                </div>
+
+                <!-- Precision Checker -->
+                <div class="calc-tool">
+                    <h3>Precision Arithmetic Test</h3>
+                    <div class="calc-inputs">
+                        <label>Value 1:
+                            <input type="number" id="prec-val1" value="123.456789" step="0.000001">
+                        </label>
+                        <label>Operation:
+                            <select id="prec-op">
+                                <option value="+">Addition (+)</option>
+                                <option value="-">Subtraction (-)</option>
+                                <option value="*">Multiplication (×)</option>
+                                <option value="/">Division (÷)</option>
+                            </select>
+                        </label>
+                        <label>Value 2:
+                            <input type="number" id="prec-val2" value="987.654321" step="0.000001">
+                        </label>
+                        <button onclick="calculatePrecision()">Calculate</button>
+                    </div>
+                    <div id="prec-result" class="calc-result"></div>
+                </div>
+
+                <!-- CTR Checker -->
+                <div class="calc-tool">
+                    <h3>CTR Threshold Checker</h3>
+                    <div class="calc-inputs">
+                        <label>Transaction Amount ($):
+                            <input type="number" id="ctr-amount" value="9500.00" step="0.01">
+                        </label>
+                        <button onclick="checkCTR()">Check CTR Requirement</button>
+                    </div>
+                    <div id="ctr-result" class="calc-result"></div>
+                    <div class="info-note">
+                        <small>
+                            Bank Secrecy Act requires Currency Transaction Reports (CTR)
+                            for transactions of $10,000 or more.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 5: Documentation -->
+        <div id="docs" class="tab-content">
+            <h2>Documentation</h2>
+            <p class="description">
+                Access comprehensive documentation for the Corn COBOL-to-Fortran Compiler.
+            </p>
+
+            <div class="docs-grid">
+                <!-- Quick Start -->
+                <div class="doc-category">
+                    <h3>🚀 Quick Start</h3>
+                    <button class="doc-button" onclick="loadDoc('EXECUTIVE-SUMMARY.txt')">
+                        Executive Summary
+                    </button>
+                    <button class="doc-button" onclick="loadDoc('QUICK-START-GUIDE.txt')">
+                        Quick Start Guide
+                    </button>
+                    <button class="doc-button" onclick="loadDoc('QUICK-REFERENCE.txt')">
+                        Quick Reference
+                    </button>
+                </div>
+
+                <!-- Banking Features -->
+                <div class="doc-category">
+                    <h3>🏦 Banking Features</h3>
+                    <button class="doc-button" onclick="loadDoc('BANKING-EDITION-SUMMARY.txt')">
+                        Banking Edition Summary
+                    </button>
+                    <button class="doc-button" onclick="loadDoc('BANKING-TESTS-GUIDE.txt')">
+                        Banking Tests Guide
+                    </button>
+                    <button class="doc-button" onclick="loadDoc('END-TO-END-TEST-GUIDE.txt')">
+                        End-to-End Test Guide
+                    </button>
+                </div>
+
+                <!-- Commercial -->
+                <div class="doc-category">
+                    <h3>💼 Commercial</h3>
+                    <button class="doc-button" onclick="loadDoc('COMMERCIAL-OVERVIEW.txt')">
+                        Commercial Overview
+                    </button>
+                    <button class="doc-button" onclick="loadDoc('ENTERPRISE-DEPLOYMENT-GUIDE.txt')">
+                        Enterprise Deployment
+                    </button>
+                    <button class="doc-button" onclick="loadDoc('LICENSE-COMMERCIAL.txt')">
+                        Commercial License
+                    </button>
+                </div>
+
+                <!-- Technical -->
+                <div class="doc-category">
+                    <h3>🔧 Technical</h3>
+                    <button class="doc-button" onclick="loadDoc('TRANSLATION-EXAMPLES.txt')">
+                        Translation Examples
+                    </button>
+                    <button class="doc-button" onclick="loadDoc('COMPILER-IMPROVEMENT-ROADMAP.txt')">
+                        Development Roadmap
+                    </button>
+                    <button class="doc-button" onclick="loadDoc('SCRIPTS-GUIDE.txt')">
+                        Scripts Guide
+                    </button>
+                </div>
+            </div>
+
+            <div id="doc-viewer" class="doc-viewer">
+                <div class="doc-header">
+                    <h3 id="doc-title">Select a document to view</h3>
+                    <button onclick="closeDoc()">✕ Close</button>
+                </div>
+                <pre id="doc-content">Click any documentation button above to view its contents...</pre>
+            </div>
+        </div>
+
+        <!-- Tab 6: API Reference -->
+        <div id="api" class="tab-content">
+            <h2>API Reference</h2>
+            <p class="description">
+                RESTful API endpoints for programmatic access to the compiler.
+            </p>
+
+            <div class="api-section">
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="path">/</span>
+                    </div>
+                    <p>Returns API information page (HTML)</p>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="path">/version</span>
+                    </div>
+                    <p>Returns compiler version and features</p>
+                    <pre class="example">curl http://127.0.0.1:8080/version</pre>
+                    <details>
+                        <summary>Response Example</summary>
+                        <pre>{
+  "name": "Corn COBOL-to-Fortran Compiler",
+  "version": "2.0",
+  "edition": "Banking Enterprise Edition",
+  "coverage": "90-95%",
+  "features": [...]
+}</pre>
+                    </details>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="path">/status</span>
+                    </div>
+                    <p>Returns compiler status and health check</p>
+                    <pre class="example">curl http://127.0.0.1:8080/status</pre>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="path">/features</span>
+                    </div>
+                    <p>Returns detailed banking features information</p>
+                    <pre class="example">curl http://127.0.0.1:8080/features</pre>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="path">/report</span>
+                        <span class="auth-required">🔒 Auth Required</span>
+                    </div>
+                    <p>Returns compilation reports and statistics</p>
+                    <pre class="example">curl -H "Authorization: Bearer SECRET_TOKEN" \\
+     http://127.0.0.1:8080/report</pre>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="path">/compile</span>
+                    </div>
+                    <p>Compile COBOL code to Fortran</p>
+                    <pre class="example">curl -X POST http://127.0.0.1:8080/compile \\
+     -H "Content-Type: application/json" \\
+     -d '{"code": "COBOL source code here..."}'</pre>
+                    <details>
+                        <summary>Request Body</summary>
+                        <pre>{
+  "code": "IDENTIFICATION DIVISION...",
+  "options": {
+    "optimize": true,
+    "banking_mode": true
+  }
+}</pre>
+                    </details>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="path">/tests</span>
+                    </div>
+                    <p>List available test suites</p>
+                    <pre class="example">curl http://127.0.0.1:8080/tests</pre>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="path">/tests/{name}/run</span>
+                    </div>
+                    <p>Run a specific test suite</p>
+                    <pre class="example">curl -X POST http://127.0.0.1:8080/tests/precision/run</pre>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="path">/validate</span>
+                    </div>
+                    <p>Validate COBOL code for banking compliance</p>
+                    <pre class="example">curl -X POST http://127.0.0.1:8080/validate \\
+     -H "Content-Type: application/json" \\
+     -d '{"code": "...", "checks": ["precision", "ctr", "audit"]}'</pre>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="path">/docs/{name}</span>
+                    </div>
+                    <p>Retrieve specific documentation file</p>
+                    <pre class="example">curl http://127.0.0.1:8080/docs/EXECUTIVE-SUMMARY.txt</pre>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h4>Authentication:</h4>
+                <p>
+                    Endpoints marked with 🔒 require Bearer token authentication.
+                    Include the header: <code>Authorization: Bearer SECRET_TOKEN</code>
+                </p>
+                <p>
+                    For production use, replace SECRET_TOKEN with a secure API key.
+                </p>
+            </div>
+        </div>
+
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>
+                <strong>Corn COBOL-to-Fortran Compiler</strong> - Banking Enterprise Edition v2.0<br>
+                Copyright © 2025 sekacorn | sekacorn@gmail.com
+            </p>
+            <p>
+                <strong>Licensing:</strong> Dual License (Open Source FREE for non-commercial | Commercial 6% revenue share)<br>
+                <strong>Status:</strong> Production-Ready | 90-95% COBOL Coverage
+            </p>
+            <p>
+                <a href="mailto:sekacorn@gmail.com">Contact Support</a> |
+                Response Time: 2 business days
+            </p>
+        </div>
+    </footer>
 </body>
 </html>

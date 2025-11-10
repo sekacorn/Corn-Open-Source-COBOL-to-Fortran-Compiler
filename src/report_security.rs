@@ -1,8 +1,16 @@
+// Copyright (c) 2025 sekacorn
+// Contact: sekacorn@gmail.com
+// All rights reserved.
+//
+// This file is part of the Corn COBOL-to-Fortran Compiler.
+// Licensed under the Corn Dual License.
+// See LICENSE-COMMERCIAL.txt and LICENSE-OPEN-SOURCE.txt for details.
+
 //! This module handles encryption and authentication for report security.
 //! Now supports:
-//! ✅ AES-256-GCM encryption for reports
-//! ✅ Secure decryption of reports
-//! ✅ API authentication using secure tokens
+//! - AES-256-GCM encryption for reports
+//! - Secure decryption of reports
+//! - API authentication using secure tokens
 
 use aes_gcm::aead::{Aead, KeyInit};
 use aes_gcm::{Aes256Gcm, Nonce};
@@ -25,7 +33,7 @@ pub fn encrypt_report(filename: &str, key: &[u8; 32]) -> std::io::Result<()> {
     let mut enc_file = fs::File::create(format!("{}.enc", filename))?;
     enc_file.write_all(&encrypted_data)?;
 
-    println!("✅ Report successfully encrypted: {}.enc", filename);
+    println!("Report successfully encrypted: {}.enc", filename);
     Ok(())
 }
 
@@ -45,7 +53,7 @@ pub fn decrypt_report(filename: &str, key: &[u8; 32]) -> std::io::Result<()> {
     let mut dec_file = fs::File::create(format!("{}.dec", filename))?;
     dec_file.write_all(&decrypted_data)?;
 
-    println!("✅ Report successfully decrypted: {}.dec", filename);
+    println!("Report successfully decrypted: {}.dec", filename);
     Ok(())
 }
 

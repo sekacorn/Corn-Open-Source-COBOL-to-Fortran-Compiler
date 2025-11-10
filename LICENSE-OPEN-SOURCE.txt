@@ -1,0 +1,238 @@
+================================================================================
+              CORN COBOL-TO-FORTRAN COMPILER
+             OPEN SOURCE LICENSE (NON-COMMERCIAL USE)
+================================================================================
+
+Copyright (c) 2025 sekacorn
+Contact: sekacorn@gmail.com
+All rights reserved.
+
+This Open Source License applies to non-commercial use of the Corn
+COBOL-to-Fortran Compiler ("Software").
+
+Jurisdiction: United States of America, State of Maryland
+
+
+================================================================================
+DUAL LICENSING NOTICE
+================================================================================
+
+This Software is available under a DUAL LICENSE:
+
+1. OPEN SOURCE LICENSE (this file) - For non-commercial use
+2. COMMERCIAL LICENSE (see LICENSE-COMMERCIAL.txt) - For commercial use with
+   6% gross revenue share
+
+You must choose the appropriate license based on your use case.
+
+
+================================================================================
+NON-COMMERCIAL OPEN SOURCE LICENSE
+================================================================================
+
+Permission is hereby granted, free of charge, to any person or organization
+obtaining a copy of this Software and associated documentation files, to use,
+copy, modify, and distribute the Software for NON-COMMERCIAL PURPOSES ONLY,
+subject to the following conditions:
+
+
+================================================================================
+1. PERMITTED NON-COMMERCIAL USES
+================================================================================
+
+You MAY use this Software for:
+
+(a) Personal education and learning
+(b) Academic research and teaching
+(c) Non-profit organization activities
+(d) Internal evaluation and testing (not for production use)
+(e) Open source project development (non-revenue generating)
+(f) Hobbyist and enthusiast projects
+(g) Charitable or humanitarian purposes
+
+
+================================================================================
+2. PROHIBITED COMMERCIAL USES
+================================================================================
+
+You MAY NOT use this Software for:
+
+(a) Any commercial product or service development
+(b) Revenue-generating activities of any kind
+(c) Consulting or professional services for compensation
+(d) Internal use within for-profit companies or organizations
+(e) Migration projects for paying clients
+(f) Any activity that generates direct or indirect revenue
+
+If you wish to use the Software for ANY commercial purpose, you MUST obtain
+a Commercial License. See LICENSE-COMMERCIAL.txt for details.
+
+
+================================================================================
+3. CONDITIONS AND LIMITATIONS
+================================================================================
+
+3.1 COPYRIGHT NOTICE
+    The above copyright notice and this permission notice shall be included
+    in all copies or substantial portions of the Software.
+
+3.2 ATTRIBUTION
+    All distributions must include clear attribution to sekacorn and
+    reference this license.
+
+3.3 LICENSE FILE INCLUSION
+    Both LICENSE-OPEN-SOURCE.txt and LICENSE-COMMERCIAL.txt must be
+    included with all distributions to inform users of licensing options.
+
+3.4 NO TRADEMARK RIGHTS
+    This license does not grant permission to use trade names, trademarks,
+    service marks, or product names of sekacorn, except as required for
+    reasonable and customary use in describing the origin of the Software.
+
+3.5 MODIFICATIONS
+    Modified versions must be clearly marked as such and must not be
+    misrepresented as the original Software.
+
+3.6 DERIVATIVE WORKS
+    Derivative works are permitted for non-commercial use only and must
+    be distributed under the same license terms.
+
+3.7 PATENT NOTICE
+    This license includes an implied patent license for non-commercial use
+    only. Any commercial use requires the Commercial License.
+
+
+================================================================================
+4. CONVERSION TO COMMERCIAL LICENSE
+================================================================================
+
+If your use changes from non-commercial to commercial:
+
+(a) You MUST obtain a Commercial License BEFORE commercial use begins
+(b) Contact sekacorn@gmail.com to arrange Commercial License terms
+(c) Revenue share obligations apply from the date commercial use begins
+(d) Failure to obtain proper licensing for commercial use constitutes
+    copyright infringement and breach of this license
+
+
+================================================================================
+5. WARRANTY DISCLAIMER
+================================================================================
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+================================================================================
+6. LIMITATION OF LIABILITY
+================================================================================
+
+IN NO EVENT SHALL SEKACORN BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT,
+OR CONSEQUENTIAL DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES
+FOR LOSS OF BUSINESS PROFITS, BUSINESS INTERRUPTION, LOSS OF BUSINESS
+INFORMATION, OR ANY OTHER PECUNIARY LOSS) ARISING OUT OF THE USE OF OR
+INABILITY TO USE THIS SOFTWARE, EVEN IF SEKACORN HAS BEEN ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGES.
+
+
+================================================================================
+7. TERMINATION
+================================================================================
+
+7.1 AUTOMATIC TERMINATION
+    This license automatically terminates if you:
+
+    (a) Violate any term of this license
+    (b) Use the Software for commercial purposes without proper license
+    (c) Remove or modify copyright or license notices
+    (d) Misrepresent the origin of the Software
+
+7.2 EFFECT OF TERMINATION
+    Upon termination, you must:
+
+    (a) Cease all use of the Software
+    (b) Destroy all copies in your possession
+    (c) If commercial use occurred, obtain Commercial License retroactively
+
+
+================================================================================
+8. GOVERNING LAW
+================================================================================
+
+This license shall be governed by and construed in accordance with the laws
+of the State of Maryland, United States of America, without regard to
+conflicts of law principles.
+
+Any legal action or proceeding relating to this license shall be brought
+exclusively in the state or federal courts located in Maryland.
+
+
+================================================================================
+9. QUESTIONS AND CLARIFICATIONS
+================================================================================
+
+If you are uncertain whether your use qualifies as non-commercial, or if
+you have any questions about this license, contact:
+
+sekacorn
+Email: sekacorn@gmail.com
+
+When in doubt, it is better to ask than to risk license violation.
+
+
+================================================================================
+10. ACCEPTANCE
+================================================================================
+
+By using this Software, you acknowledge that you have read this license,
+understand it, and agree to be bound by its terms and conditions.
+
+If you cannot comply with the non-commercial restriction, you must obtain
+a Commercial License before using the Software.
+
+
+================================================================================
+COMMERCIAL USE EXAMPLES (Require Commercial License)
+================================================================================
+
+The following are examples of commercial use requiring a Commercial License:
+
+- Using the compiler in a for-profit company's software development
+- Providing COBOL-to-Fortran migration services to clients
+- Selling products that incorporate this compiler
+- Using the compiler as part of consulting services
+- Internal use within a commercial organization for production purposes
+- SaaS offerings that utilize this compiler
+- Any use that generates revenue directly or indirectly
+
+
+================================================================================
+NON-COMMERCIAL USE EXAMPLES (Permitted Under This License)
+================================================================================
+
+The following are examples of non-commercial use permitted under this license:
+
+- University student using compiler for coursework
+- Professor using compiler for teaching or research
+- Hobbyist migrating personal COBOL projects
+- Non-profit organization migrating legacy systems (no revenue)
+- Developer evaluating compiler for potential future commercial use
+- Open source contributor improving the compiler
+- Researcher studying compiler technology
+
+
+================================================================================
+                    END OF OPEN SOURCE LICENSE
+================================================================================
+
+For commercial licensing, see LICENSE-COMMERCIAL.txt or contact:
+sekacorn@gmail.com
+
+Last Updated: 2025-11-09
+Version: 1.0

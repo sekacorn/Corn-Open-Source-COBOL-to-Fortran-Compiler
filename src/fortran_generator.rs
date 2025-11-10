@@ -1,8 +1,16 @@
+// Copyright (c) 2025 sekacorn
+// Contact: sekacorn@gmail.com
+// All rights reserved.
+//
+// This file is part of the Corn COBOL-to-Fortran Compiler.
+// Licensed under the Corn Dual License.
+// See LICENSE-COMMERCIAL.txt and LICENSE-OPEN-SOURCE.txt for details.
+
 //! This module converts parsed COBOL structures into Fortran code.
 //! Now supports:
-//! ✅ File Handling (OPEN, READ, WRITE)
-//! ✅ Advanced Loops (PERFORM VARYING, PERFORM UNTIL)
-//! ✅ COBOL Embedded SQL (EXEC SQL -> Fortran SQL)
+//! - File Handling (OPEN, READ, WRITE)
+//! - Advanced Loops (PERFORM VARYING, PERFORM UNTIL)
+//! - COBOL Embedded SQL (EXEC SQL -> Fortran SQL)
 
 use crate::cobol_parser::{CobolProgram, CobolParagraph, CobolStatement};
 

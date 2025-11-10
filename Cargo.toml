@@ -1,7 +1,10 @@
 [package]
 name = "cobol-fortran-compiler"
-version = "0.1.0"
+version = "2.0.0"
 edition = "2018"
+authors = ["sekacorn <sekacorn@gmail.com>"]
+description = "COBOL-to-Fortran Compiler - Banking Enterprise Edition"
+license = "SEE LICENSE-COMMERCIAL.txt AND LICENSE-OPEN-SOURCE.txt"
 
 [dependencies]
 aes-gcm = "0.9"                     # Encryption library for secure reports
@@ -13,3 +16,12 @@ flate2 = "1.0"                       # Gzip compression for reports
 serde = { version = "1.0", features = ["derive"] } # Serialization support
 serde_json = "1.0"                    # JSON handling for reports
 sqlx = { version = "0.5", features = ["mysql", "postgres", "sqlite", "runtime-tokio-rustls"] } # Database support for SQL integration
+chrono = "0.4"                       # Date/time support for timestamps
+
+[[bin]]
+name = "corn-compiler"
+path = "src/main.rs"
+
+[[bin]]
+name = "web-dashboard"
+path = "src/web_dashboard.rs"
