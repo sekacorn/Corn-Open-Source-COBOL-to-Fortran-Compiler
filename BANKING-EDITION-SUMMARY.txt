@@ -13,7 +13,7 @@ Version: 2.0 - Banking Enterprise Edition
                     TRANSFORMATION COMPLETE
 ================================================================================
 
-Your compiler has been transformed from 75-80% coverage to 90-95% coverage
+The compiler has been transformed from 75-80% coverage to 90-95% coverage
 with ENTERPRISE-GRADE BANKING FEATURES ready for production deployment in
 financial institutions.
 
